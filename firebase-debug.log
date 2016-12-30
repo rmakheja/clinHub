@@ -3,12 +3,12 @@
 [debug] CLI Version:  3.2.1
 [debug] Platform:     win32
 [debug] Node Version: v6.9.2
-[debug] Time:         Fri Dec 30 2016 10:41:21 GMT-0500 (Eastern Standard Time)
+[debug] Time:         Fri Dec 30 2016 10:02:01 GMT-0500 (Eastern Standard Time)
 [debug] ----------------------------------------------------------------------
 [debug] 
 [info] Starting Firebase development server...
 [info] 
-[info] Project Directory: C:\Users\rashm\Desktop\clinHub
+[info] Project Directory: C:\Users\rashm\Desktop\example
 [info] Public Directory: ./
 [info] 
 [info] Server listening at: http://localhost:5000

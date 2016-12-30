@@ -1,5 +1,5 @@
 service firebase.storage {
-  match /b/example.appspot.com/o {
+  match /b/clinhub-24309.appspot.com/o {
     match /{userId}/{timeStamp}/{fileName} {
       allow write: if request.auth.uid == userId;
       allow read;
