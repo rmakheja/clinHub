@@ -1,0 +1,339 @@
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="ClinHub">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClinHub</title>
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Web Application Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ClinHub">
+    <meta name="theme-color" content="#303F9F">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ClinHub">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#303F9F">
+
+    <!-- Tile icon for Win8 -->
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <meta name="msapplication-navbutton-color" content="#303F9F">
+
+    <!-- Material Design Lite -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+    <!-- App Styling -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+      <script src="index1.js"></script>
+  </head>
+
+  <body class="mdl-color--brown-100">
+
+   <header class="mdl-layout__header mdl-color-text--black mdl-color--brown-500">
+      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+        <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+          <h3><i class="fa fa-user-md" style="color:red"></i>ClinHub</h3>
+        </div>
+        <div id="user-container">
+          <div hidden id="user-pic"></div>
+          <div hidden id="user-name"></div>
+          <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+            Sign-out
+          </button>
+          <button hidden id="sign-in" class="mdl-button mdl-js-button mdl-button--fab " style="position: absolute; ">
+            <i class="fa fa-sign-in" style="color:red"></i> Sign-in
+          </button>
+        </div>
+      </div>
+    </header>
+
+  <div class="container">
+<div class="row " style="padding-top:40px;">
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                RECENT CHAT HISTORY
+            </div>
+            <div class="panel-body">
+<ul class="media-list">
+
+                                    <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle " src="assets/img/user.png" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    Donec sit amet ligula enim. Duis vel condimentum massa.
+              
+              Donec sit amet ligula enim. Duis vel condimentum massa.Donec sit amet ligula enim. 
+                                                    Duis vel condimentum massa.
+                                                    Donec sit amet ligula enim. Duis vel condimentum massa.
+                                                    <br />
+                                                   <small class="text-muted">Alex Deo | 23rd June at 5:00pm</small>
+                                                    <hr />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+     <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle " src="assets/img/user.gif" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    Donec sit amet ligula enim. Duis vel condimentum massa.
+              
+              Donec sit amet ligula enim. Duis vel condimentum massa.Donec sit amet ligula enim. 
+                                                    Duis vel condimentum massa.
+                                                    Donec sit amet ligula enim. Duis vel condimentum massa.
+                                                    <br />
+                                                   <small class="text-muted">Jhon Rexa | 23rd June at 5:00pm</small>
+                                                    <hr />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+     <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle " src="assets/img/user.png" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    Donec sit amet ligula enim. Duis vel condimentum massa.
+              
+              Donec sit amet ligula enim. Duis vel condimentum massa.Donec sit amet ligula enim. 
+                                                    Duis vel condimentum massa.
+                                                    Donec sit amet ligula enim. Duis vel condimentum massa.
+                                                    <br />
+                                                   <small class="text-muted">Alex Deo | 23rd June at 5:00pm</small>
+                                                    <hr />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+     <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle " src="assets/img/user.gif" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    Donec sit amet ligula enim. Duis vel condimentum massa.
+              
+              Donec sit amet ligula enim. Duis vel condimentum massa.Donec sit amet ligula enim. 
+                                                    Duis vel condimentum massa.
+                                                    Donec sit amet ligula enim. Duis vel condimentum massa.
+                                                    <br />
+                                                   <small class="text-muted">Jhon Rexa | 23rd June at 5:00pm</small>
+                                                    <hr />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                </ul>
+            </div>
+            <div class="panel-footer">
+                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter Message" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-info" type="button">SEND</button>
+                                    </span>
+                                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+               ONLINE USERS
+            </div>
+            <div class="panel-body">
+                <ul class="media-list">
+
+                                    <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle" style="max-height:40px;" src="assets/img/user.png" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    <h5>Alex Deo | User </h5>
+                                                    
+                                                   <small class="text-muted">Active From 3 hours</small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+     <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle" style="max-height:40px;" src="assets/img/user.gif" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    <h5>Jhon Rexa | User </h5>
+                                                    
+                                                   <small class="text-muted">Active From 3 hours</small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                    <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle" style="max-height:40px;" src="assets/img/user.png" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    <h5>Alex Deo | User </h5>
+                                                    
+                                                   <small class="text-muted">Active From 3 hours</small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                    <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle" style="max-height:40px;" src="assets/img/user.gif" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    <h5>Jhon Rexa | User </h5>
+                                                    
+                                                   <small class="text-muted">Active From 3 hours</small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                     <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle" style="max-height:40px;" src="assets/img/user.png" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    <h5>Alex Deo | User </h5>
+                                                    
+                                                   <small class="text-muted">Active From 3 hours</small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+     <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle" style="max-height:40px;" src="assets/img/user.gif" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    <h5>Jhon Rexa | User </h5>
+                                                    
+                                                   <small class="text-muted">Active From 3 hours</small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                    <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle" style="max-height:40px;" src="assets/img/user.png" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    <h5>Alex Deo | User </h5>
+                                                    
+                                                   <small class="text-muted">Active From 3 hours</small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                    <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle" style="max-height:40px;" src="assets/img/user.gif" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    <h5>Jhon Rexa | User </h5>
+                                                    
+                                                   <small class="text-muted">Active From 3 hours</small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                </ul>
+                </div>
+            </div>
+        
+    </div>
+</div>
+  </div>
+</body>
+
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBqSFTzOw-QjM79Ll0u9ik4bYDRf7y0gHs",
+    authDomain: "clinhub-24309.firebaseapp.com",
+    databaseURL: "https://clinhub-24309.firebaseio.com",
+    storageBucket: "clinhub-24309.appspot.com",
+    messagingSenderId: "440022482925"
+  };
+  firebase.initializeApp(config);
+</script>
+
+</html>

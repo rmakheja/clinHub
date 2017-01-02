@@ -11,6 +11,7 @@ function ClinHub() {
   this.gsignInButton = document.getElementById('Tsign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.login = document.getElementById('login');
+  this.home = document.getElementById('home');
   // Saves message on form submit.
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.fsignInButton.addEventListener('click', this.fsignIn.bind(this));
@@ -65,16 +66,16 @@ ClinHub.prototype.onAuthStateChanged = function(user) {
     this.userPic.removeAttribute('hidden');
     this.signOutButton.removeAttribute('hidden');
     login.hidden=true
-
-    else { // User is signed out!
+    window.location = "chat.html";
+    this.home.hidden = false;
+    this.home.textContent = "Welcome   " + this.userName.textContent
+  } else { // User is signed out!
     // Hide user's profile and sign-out button.
     this.userName.setAttribute('hidden', 'true');
     this.userPic.setAttribute('hidden', 'true');
     this.signOutButton.setAttribute('hidden', 'true');
-
-    // Show sign-in button.
-    //this.signInButton.removeAttribute('hidden');
-    //this.login.setAttribute('hidden','false');
+    this.home.hidden = true
+    login.hidden = false;
   }
 };
 
@@ -114,33 +115,3 @@ ClinHub.prototype.checkSetup = function() {
         'displayed there.');
   }
 };
-
-   
-
-function googleSignin() {
-   firebase.auth()
-   
-   .signInWithPopup(provider).then(function(result) {
-      var token = result.credential.accessToken;
-      var user = result.user;
-		
-      console.log(token)
-      console.log(user)
-   }).catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-		
-      console.log(error.code)
-      console.log(error.message)
-   });
-}
-
-function googleSignout() {
-   firebase.auth().signOut()
-	
-   .then(function() {
-      console.log('Signout Succesfull')
-   }, function(error) {
-      console.log('Signout Failed')  
-   });
-}
