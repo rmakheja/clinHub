@@ -1,4 +1,3 @@
-'use strict';
 
 function ClinHub() {
   this.checkSetup();
