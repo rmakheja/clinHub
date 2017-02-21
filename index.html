@@ -36,8 +36,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- <link href="./bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
-
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
   </head>
 
   <body class="mdl-color--brown-100">
@@ -50,7 +49,7 @@
         <div id="user-container">
           <div hidden id="user-pic"></div>
           <div hidden id="user-name"></div>
-          <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+          <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white" onclick="signOut()">
             Sign-out
           </button>
           <button hidden id="sign-in" class="mdl-button mdl-js-button mdl-button--fab " style="position: absolute; ">
@@ -59,28 +58,95 @@
         </div>
       </div>
     </header>
+<div id = "login" class="container" style="position: absolute; top: 45%; margin:0 auto; text-align: center;"></div>
+<div hidden id = "home" class ="mdl-color-text--black" >
 
-<div id = "login" class="container" style="position: absolute; top: 45%; left: 45%; margin:0 auto">
-  <div class="omb_login">
-    <h3 class="omb_authTitle" style="text-align: center;">Login</h3>
-    <div class="row omb_row-sm-offset-3 omb_socialButtons">
-      <button id="Fsign-in" class="mdl-button mdl-js-button mdl-button--fab">
-        <i class="fa fa-facebook" style="color:red"></i>
-      </button>
-      <button id="Tsign-in" class="mdl-button mdl-js-button mdl-button--fab ">
-        <i class="fa fa-twitter" style="color:red"></i>
-      </button>
-      <button id="Gsign-in" class="mdl-button mdl-js-button mdl-button--fab ">
-        <i class="fa fa-google" style="color:red"></i>
-      </button>
+<div class="container">
+<div class="row " style="padding-top:40px;">
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                RECENT CHAT HISTORY
+            </div>
+            <div class="panel-body">
+<ul class="media-list">
+  <li class="media">
+    <div class="media-body">
+    <div class="media">
+      <a class="pull-left" href="#">
+      <img class="media-object img-circle " src="assets/img/user.png" />
+      </a>
+    <div class="media-body" >
+      hello
+      <br />
+     <small class="text-muted">Alex Deo | 23rd June at 5:00pm</small>
+     <hr />
+    </div>
+  </div>
+ </div>
+</li>
+<li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle " src="assets/img/user.gif" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    Donec sit amet ligula enim. Duis vel condimentum massa.
+    hello
+  <br />
+  <small class="text-muted">Jhon Rexa | 23rd June at 5:00pm</small>
+  <hr />
+</div>
+</div>
+</div>
+</li>
+<li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle " src="assets/img/user.png" />
+                                                </a>
+                                                <div class="media-body" >
+                                                    Donec sit amet ligula enim. Duis vel condimentum massa.
+hello
+<br />
+<small class="text-muted">Alex Deo | 23rd June at 5:00pm</small>
+<hr />
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="panel-footer">
+  <div class="input-group">
+    <input type="text" class="form-control" placeholder="Enter Message" />
+      <span class="input-group-btn">
+        <button class="btn btn-info" type="button">SEND</button>
+      </span>
+    </div>
   </div>
 </div>
 </div>
-<div id = "home" class ="mdl-color-text--black" style="position: absolute; top: 45%; left: 45%; margin:0 auto">
-  Welcome :)
-
+<div class="col-md-4">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      ONLINE USERS
+    </div>
+    <div class="panel-body">
+      <ul class="media-list" id = "user_list"></ul>
 </div>
-  </body>  	
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>  	
   
 <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
 <script>
@@ -95,4 +161,5 @@
   firebase.initializeApp(config);
 </script>
   <script src="index.js"></script>
+
   </html>

@@ -1,87 +1,78 @@
-
+var currentUser = '';
+var userList = [];
+var userRef = '';
 function ClinHub() {
-  this.checkSetup();
-
-  // Shortcuts to DOM Elements.
-  this.userPic = document.getElementById('user-pic');
-  this.userName = document.getElementById('user-name');
-  this.fsignInButton = document.getElementById('Fsign-in');
-  this.tsignInButton = document.getElementById('Gsign-in');
-  this.gsignInButton = document.getElementById('Tsign-in');
-  this.signOutButton = document.getElementById('sign-out');
-  this.login = document.getElementById('login');
-  this.home = document.getElementById('home');
-  // Saves message on form submit.
-  this.signOutButton.addEventListener('click', this.signOut.bind(this));
-  this.fsignInButton.addEventListener('click', this.fsignIn.bind(this));
-  this.gsignInButton.addEventListener('click', this.gsignIn.bind(this));
-  this.tsignInButton.addEventListener('click', this.tsignIn.bind(this));
-  this.initFirebase();
+  checkSetup();
+  document.getElementById('login').innerHTML = login_template;
+  initFirebase();
+ loadUsers();  
 }
-// Sets up shortcuts to Firebase features and initiate firebase auth.
-ClinHub.prototype.initFirebase = function() {
-  // Shortcuts to Firebase SDK features.
-  this.auth = firebase.auth();
-  this.database = firebase.database();
-  this.storage = firebase.storage();
-  // Initiates Firebase auth and listen to auth state changes.
-  this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
+
+initFirebase = function() {
+
+  auth = firebase.auth();
+  database = firebase.database();
+  storage = firebase.storage();
+  auth.onAuthStateChanged(onAuthStateChanged.bind(this));
 };
 
-ClinHub.prototype.fsignIn = function() {
-  // Sign in Firebase using popup auth and Google as the identity provider.
+fsignIn = function() {
   var provider = new firebase.auth.GoogleAuthProvider();
-  this.auth.signInWithPopup(provider);
+  auth.signInWithPopup(provider);
 };
-ClinHub.prototype.tsignIn = function() {
-  // Sign in Firebase using popup auth and Google as the identity provider.
+tsignIn = function() {
   var provider = new firebase.auth.GoogleAuthProvider();
-  this.auth.signInWithPopup(provider);
+  auth.signInWithPopup(provider);
 };
-ClinHub.prototype.gsignIn = function() {
-  // Sign in Firebase using popup auth and Google as the identity provider.
+gsignIn = function() {
   var provider = new firebase.auth.GoogleAuthProvider();
-  this.auth.signInWithPopup(provider);
+  auth.signInWithPopup(provider);
+};
+
+signOut = function() {
+   auth.signOut();
 };
 
 
-// Signs-out of Friendly Chat.
-ClinHub.prototype.signOut = function() {
-  // TODO(DEVELOPER): Sign out of Firebase.
-   this.auth.signOut();
-};
+onAuthStateChanged = function(user) {
 
-// Triggers when the auth state change for instance when the user signs-in or signs-out.
-ClinHub.prototype.onAuthStateChanged = function(user) {
-  if (user) { // User is signed in!
-    var profilePicUrl = user.photoURL; // Only change these two lines!
-    var userName = user.displayName;   // Only change these two lines!
-    // Set the user's profile pic and name.
-    this.userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
-    this.userName.textContent = userName;
+  var userPic = document.getElementById('user-pic');
+  var userName = document.getElementById('user-name');
+  var login = document.getElementById('login');
+  var home = document.getElementById('home');
+  var signOutButton = document.getElementById('sign-out');
 
-    // Show user's profile and sign-out button.
-    this.userName.removeAttribute('hidden');
-    this.userPic.removeAttribute('hidden');
-    this.signOutButton.removeAttribute('hidden');
-    login.hidden=true
-    window.location = "chat.html";
-    this.home.hidden = false;
-    this.home.textContent = "Welcome   " + this.userName.textContent
-  } else { // User is signed out!
-    // Hide user's profile and sign-out button.
-    this.userName.setAttribute('hidden', 'true');
-    this.userPic.setAttribute('hidden', 'true');
-    this.signOutButton.setAttribute('hidden', 'true');
-    this.home.hidden = true
-    login.hidden = false;
+  if (user) {
+    var profilePicUrl = user.photoURL; 
+    var userName = user.displayName;   
+    document.getElementById('login').innerHTML = '';
+    currentUser = user;
+    userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
+    userName.textContent = userName;
+    userName.hidden = false;
+    userPic.hidden = false;
+    signOutButton.hidden = false;
+    isUserPresent();
+    createUserList();
+    home.hidden = false;
+    
+  } else {
+    currentUser = '';
+    document.getElementById('login').innerHTML = login_template;
+    userPic.style.backgroundImage = '';
+    userName.textContent = '';
+    userName.setAttribute('hidden', 'true');
+    userPic.setAttribute('hidden', 'true');
+    signOutButton.setAttribute('hidden', 'true');
+    home.hidden = true
+    
   }
 };
 
-// Returns true if user is signed-in. Otherwise false and displays a message.
-ClinHub.prototype.checkSignedInWithMessage = function() {
+
+checkSignedInWithMessage = function() {
   /* TODO(DEVELOPER): Check if user is signed-in Firebase. */
- if (this.auth.currentUser) {
+ if (auth.currentUser) {
     return true;
   }
   // Display a message to the user using a Toast.
@@ -89,10 +80,10 @@ ClinHub.prototype.checkSignedInWithMessage = function() {
     message: 'You must sign-in first',
     timeout: 2000
   };
-  //this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
+  //signInSnackbar.MaterialSnackbar.showSnackbar(data);
   return false;
 };
-ClinHub.resetMaterialTextfield = function(element) {
+resetMaterialTextfield = function(element) {
   element.value = '';
   element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
 };
@@ -101,7 +92,7 @@ window.onload = function() {
   window.clinhub = new ClinHub();
 };
 
-ClinHub.prototype.checkSetup = function() {
+checkSetup = function() {
   if (!window.firebase || !(firebase.app instanceof Function) || !window.config) {
     window.alert('You have not configured and imported the Firebase SDK. ' +
         'Make sure you go through the codelab setup instructions.');
@@ -114,3 +105,84 @@ ClinHub.prototype.checkSetup = function() {
         'displayed there.');
   }
 };
+
+
+loadUsers = function(){
+    userRef = firebase.database().ref('users/');
+    userRef.on("value", function(snapshot) {
+   var users = snapshot.val();
+   for (var userId in users)
+   {
+     if(users.hasOwnProperty(userId)){
+      var user = new userClass(userId,users[userId]["name"],users[userId]["email"],users[userId]["picUrl"]);
+       userList.push(user);
+       console.log("loaded child");
+     }
+   }
+
+}, function (error) {
+   console.log("Error: " + error.code);
+});
+
+};
+
+
+isUserPresent = function(){
+  if(!userList.find(function(user){return user.email == currentUser.email;}))
+    {
+      userList = [];
+      userRef.push({
+   name: currentUser.displayName,
+   email:currentUser.email,
+   picUrl: currentUser.photoURL
+});
+    }
+
+}
+userClass = class{
+  constructor(key,name,email,picUrl){
+    this.key = key;
+    this.name = name;
+    this.picUrl = picUrl;
+    this.email = email;
+  }
+}
+
+login_template ='<div class="omb_login">'+
+    '<h3 class="omb_authTitle">Login</h3>'+
+    '<div class="row omb_row-sm-offset-3 omb_socialButtons">'+
+      '<button id="Fsign-in" class="mdl-button mdl-js-button mdl-button--fab" onclick="fsignIn()">'+
+        '<i class="fa fa-facebook" style="color:red"></i>'+
+      '</button>'+
+      '<button id="Tsign-in" class="mdl-button mdl-js-button mdl-button--fab onclick="tsignIn()">'+
+        '<i class="fa fa-twitter" style="color:red"></i>'+
+      '</button>'+
+      '<button id="Gsign-in" class="mdl-button mdl-js-button mdl-button--fab " onclick="gsignIn()">'+
+        '<i class="fa fa-google" style="color:red"></i>'+
+      '</button>'+
+  '</div>'+
+'</div>'
+
+function createUserList(){
+  var list = document.getElementById('user_list');
+  list.innerHTML = '';
+  var ul = '';
+  userList.forEach(function(user){
+    if(user.email != currentUser.email)
+      ul += '<li class="media">'+
+          '<div class="media-body">'+
+            '<div class="media">'+
+             '<a class="pull-left" href="#">'+
+               '<img class="media-object img-circle" style="max-height:40px;" src="'+user.picUrl+'" />'+
+              '</a>'+
+               '<div class="media-body" >'+
+                  '<h5>'+user.name +'</h5>'+
+              '<small class="text-muted">Active From 3 hours</small>'+
+            '</div>'+
+          '</div>'+
+         '</div>'+
+    '</li>'
+    
+  });
+  list.innerHTML = ul;
+}
