@@ -1,11 +1,13 @@
 var currentUser = '';
 var userList = [];
 var userRef = '';
+var messageRef = '';
+var messageList = [];
 function ClinHub() {
   checkSetup();
   document.getElementById('login').innerHTML = login_template;
   initFirebase();
- loadUsers();  
+ 
 }
 
 initFirebase = function() {
@@ -52,11 +54,24 @@ onAuthStateChanged = function(user) {
     userName.hidden = false;
     userPic.hidden = false;
     signOutButton.hidden = false;
-    isUserPresent();
-    createUserList();
+    messageList = [];
+    userList = [];
+    loadUsers().then(function(){
+      isUserPresent();
+      createUserList();
+      loadMessages().then(function(){
+        displayMessages()
+        }).catch(function(error){
+            console.log("some error - " + error);
+            });
+    }).catch(function(error){
+        console.log("some error - " + error);
+      });  
     home.hidden = false;
     
   } else {
+    messageList = [];
+    userList = [];
     currentUser = '';
     document.getElementById('login').innerHTML = login_template;
     userPic.style.backgroundImage = '';
@@ -85,7 +100,7 @@ checkSignedInWithMessage = function() {
 };
 resetMaterialTextfield = function(element) {
   element.value = '';
-  element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
+  //element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
 };
 
 window.onload = function() {
@@ -108,35 +123,42 @@ checkSetup = function() {
 
 
 loadUsers = function(){
+
     userRef = firebase.database().ref('users/');
-    userRef.on("value", function(snapshot) {
-   var users = snapshot.val();
-   for (var userId in users)
-   {
-     if(users.hasOwnProperty(userId)){
-      var user = new userClass(userId,users[userId]["name"],users[userId]["email"],users[userId]["picUrl"]);
-       userList.push(user);
-       console.log("loaded child");
-     }
-   }
-
-}, function (error) {
-   console.log("Error: " + error.code);
-});
-
+    console.log(userRef);
+    return new Promise(function(res, rej){
+        userRef.on("value", function(snapshot) {
+        var users = snapshot.val();
+        console.log("here"+users);
+          for (var userId in users)
+          {
+             if(users.hasOwnProperty(userId)){
+                var user = new userClass(userId,users[userId]["name"],users[userId]["email"],users[userId]["picUrl"]);
+                userList.push(user);
+                console.log("loaded child");
+              }
+          }
+        res();
+        }, function (error) {
+          console.log("Error: " + error.code);
+          rej(error);
+      });
+    });
+    
 };
 
 
 isUserPresent = function(){
-  if(!userList.find(function(user){return user.email == currentUser.email;}))
+  if(userList.find(function(user){return user.email == currentUser.email}) == undefined)
     {
+      console.log(currentUser);
       userList = [];
       userRef.push({
-   name: currentUser.displayName,
-   email:currentUser.email,
-   picUrl: currentUser.photoURL
-});
-    }
+        name: currentUser.displayName,
+        email:currentUser.email,
+        picUrl: currentUser.photoURL
+      });
+  }
 
 }
 userClass = class{
@@ -186,3 +208,135 @@ function createUserList(){
   });
   list.innerHTML = ul;
 }
+
+loadMessages = function(){
+    messageRef = firebase.database().ref('messageThreads/');
+   return new Promise(function(res, rej){
+       messageRef.on("value", function(snapshot) {
+          var threads = snapshot.val();
+          console.log(threads);
+          messageList = [];
+          for (var threadId in threads)
+          {
+            if(threads.hasOwnProperty(threadId)){
+              var user1 = threads[threadId]["user1"]
+              var user2 = threads[threadId]["user2"]
+              var msgList = [];
+                var messages = threads[threadId]["messages"];
+                for(var msg in messages)
+                {
+                    var msgObject = new messageClass(msg,messages[msg].from,messages[msg].text);
+                    msgList.push(msgObject);
+                }
+                
+              if(user1 == currentUser.email)
+              {
+                var thread = new messageThreadClass(threadId,msgList,user2);
+                messageList.push(thread);
+              }
+              else if(user2 == currentUser.email) {
+                var thread = new messageThreadClass(threadId,msgList,user1);
+                messageList.push(thread);
+              }
+            }
+         }
+         res();
+          }, function (error) {
+          console.log("Error: " + error.code);
+          rej(error);
+        }); 
+   })
+   
+
+};
+messageThreadClass = class{
+  constructor(key,messages,anotherUser){
+    this.key = key;
+    this.anotherUser = anotherUser
+    this.messages = messages;
+  }
+};
+messageClass = class{
+  constructor(key,from,text){
+    this.key = key
+    this.from = from
+    this.text = text
+  }
+}
+displayMessages = function(){
+  var msgDiv = document.getElementById("history");
+  msgDiv.innerHTML='';
+  var ul ='';
+  for(var thread in messageList) {
+    userList.forEach(function(data){
+      if(data.email == messageList[thread].anotherUser)
+        {
+          ul +=  '<li class="media" id = "'+messageList[thread].key+'"onclick="chat(this.id)">'+
+              '<div class="media-body media">'+
+              '<a class="pull-left" href="#">'+
+              '<img class="media-object img-circle " style="max-height:40px;" src="'+ data.picUrl+'" />'+
+              '<div class="media-body" >'+ messageList[thread].messages[0].text+
+              '<br />'+
+              '<small class="text-muted">'+data.name +' </small>'+
+              '<hr /></div></a></div></li>';
+          
+        }    
+    })
+
+    };
+    msgDiv.innerHTML= msgDiv.innerHTML + ul;
+};
+
+chat =function(id){
+  console.log(id);
+  for(var thread in messageList) {
+    if(messageList[thread].key == id)
+      {
+        document.getElementById("chat").hidden = false;
+        document.getElementById("historyParent").hidden = true;
+        document.getElementById("sendBtn").value = id;
+        userList.forEach(function(data){
+          var anotherUser = messageList[thread].anotherUser; 
+          if(data.email == anotherUser)
+          {
+            document.getElementById("name").innerHTML = data.name;
+            document.getElementById("pic").src=data.picUrl;
+            var msgList = messageList[thread].messages
+            var chatHolder = document.getElementById("chatmsg");
+            var ul ='';
+            for(var msg in msgList){
+              ul += '<li class="media">'+
+                    '<div class="media-body media">'+            
+                    '<div class="media-body" >'+
+                    '<small class="text-muted">'+msgList[msg].from +':  </small><br/>'+
+                    '<div>'+msgList[msg].text+'</div>'
+                    '<br/><hr/></div></a></div></li>';
+            }
+            chatHolder.innerHTML=ul;
+          }
+        })
+    };
+  }
+}
+
+saveMessage = function(id){
+  //this.preventDefault();
+  // Check that the user entered a message and is signed in.
+  var messageInput = document.getElementById("new_message");
+  if (messageInput.value) {
+    var threadRef = messageRef.child(id).child("messages");
+     threadRef.push({
+      from: currentUser.displayName,
+      text: messageInput.value
+      
+    }).then(function() {
+      resetMaterialTextfield(messageInput);
+      chat(id)
+    }.bind(this)).catch(function(error) {
+      console.error('Error writing new message to Firebase Database', error);
+    });
+  }
+}
+
+ 
+          
