@@ -3,6 +3,7 @@ var userList = [];
 var userRef = '';
 var messageRef = '';
 var messageList = [];
+var currid = '';
 function ClinHub() {
   checkSetup();
   document.getElementById('login').innerHTML = login_template;
@@ -191,15 +192,15 @@ function createUserList(){
   var ul = '';
   userList.forEach(function(user){
     if(user.email != currentUser.email)
-      ul += '<li class="media">'+
+      ul += '<li id="'+user.email+'"class="media"'+'" onclick="chat(this.id)">'+
           '<div class="media-body">'+
             '<div class="media">'+
              '<a class="pull-left" href="#">'+
                '<img class="media-object img-circle" style="max-height:40px;" src="'+user.picUrl+'" />'+
               '</a>'+
-               '<div class="media-body" >'+
+               '<div class="media-body">'+
                   '<h5>'+user.name +'</h5>'+
-              '<small class="text-muted">Active From 3 hours</small>'+
+              // '<small class="text-muted">Active From 3 hours</small>'+
             '</div>'+
           '</div>'+
          '</div>'+
@@ -271,7 +272,7 @@ displayMessages = function(){
     userList.forEach(function(data){
       if(data.email == messageList[thread].anotherUser)
         {
-          ul +=  '<li class="media" id = "'+messageList[thread].key+'"onclick="chat(this.id)">'+
+          ul +=  '<li class="media" id = "'+messageList[thread].anotherUser+'"onclick="chat(this.id)">'+
               '<div class="media-body media">'+
               '<a class="pull-left" href="#">'+
               '<img class="media-object img-circle " style="max-height:40px;" src="'+ data.picUrl+'" />'+
@@ -289,33 +290,55 @@ displayMessages = function(){
 
 chat =function(id){
   console.log(id);
+  if(id)
+      currid = id;
+
+  var found = false;
+  document.getElementById("chat").hidden = false;
+  document.getElementById("historyParent").hidden = true;
+  userList.forEach(function(data){
+    var anotherUser = id; 
+    if(data.email == anotherUser)
+    {
+      document.getElementById("name").innerHTML = data.name;
+      document.getElementById("pic").src=data.picUrl;
+    }
+  });
+        
   for(var thread in messageList) {
-    if(messageList[thread].key == id)
+    if(messageList[thread].anotherUser == id)
       {
-        document.getElementById("chat").hidden = false;
-        document.getElementById("historyParent").hidden = true;
-        document.getElementById("sendBtn").value = id;
-        userList.forEach(function(data){
-          var anotherUser = messageList[thread].anotherUser; 
-          if(data.email == anotherUser)
-          {
-            document.getElementById("name").innerHTML = data.name;
-            document.getElementById("pic").src=data.picUrl;
-            var msgList = messageList[thread].messages
-            var chatHolder = document.getElementById("chatmsg");
-            var ul ='';
-            for(var msg in msgList){
-              ul += '<li class="media">'+
-                    '<div class="media-body media">'+            
-                    '<div class="media-body" >'+
-                    '<small class="text-muted">'+msgList[msg].from +':  </small><br/>'+
-                    '<div>'+msgList[msg].text+'</div>'
-                    '<br/><hr/></div></a></div></li>';
-            }
-            chatHolder.innerHTML=ul;
-          }
-        })
+        found = true;
+        document.getElementById("sendBtn").value = "thread: " + messageList[thread].key;
+        var msgList = messageList[thread].messages
+        var chatHolder = document.getElementById("chatmsg");
+        var ul ='';
+        for(var msg in msgList){
+          ul += '<li class="media">'+
+                '<div class="media-body media">'+            
+                '<div class="media-body" >'+
+                '<small class="text-muted">'+msgList[msg].from +':  </small><br/>'+
+                '<div>'+msgList[msg].text+'</div>'
+                '<br/><hr/></div></a></div></li>';
+        }
+        chatHolder.innerHTML=ul;
     };
+  }
+//new chat
+  if(found == false){
+    document.getElementById("sendBtn").value = "email : "+id;
+    var msgList = "";
+    var chatHolder = document.getElementById("chatmsg");
+    var ul ='';
+    for(var msg in msgList){
+      ul += '<li class="media">'+
+            '<div class="media-body media">'+    
+            '<div class="media-body" >'+
+            '<small class="text-muted">'+':  </small><br/>'+
+            '<div>'+'</div>'
+            '<br/><hr/></div></a></div></li>';
+    }
+    chatHolder.innerHTML=ul;
   }
 }
 
@@ -323,20 +346,44 @@ saveMessage = function(id){
   //this.preventDefault();
   // Check that the user entered a message and is signed in.
   var messageInput = document.getElementById("new_message");
+  var type = id.substring(0, 8);
+  id = id.substring(8);
   if (messageInput.value) {
-    var threadRef = messageRef.child(id).child("messages");
-     threadRef.push({
-      from: currentUser.displayName,
-      text: messageInput.value
-      
+    if(type == "email : "){
+      messageRef.push({
+      messages :{
+        0:{
+          from: currentUser.displayName,
+          text: messageInput.value
+        }
+      },
+      user1: currentUser.email, 
+      user2: id
     }).then(function() {
       resetMaterialTextfield(messageInput);
       chat(id)
     }.bind(this)).catch(function(error) {
       console.error('Error writing new message to Firebase Database', error);
     });
+    }
+    else {
+    var threadRef = messageRef.child(id).child("messages");
+    //threadRef.on("child_added",chat)
+      threadRef.push({
+      from: currentUser.displayName,
+      text: messageInput.value
+      
+    }).then(function() {
+      resetMaterialTextfield(messageInput);
+      messageList.forEach(function(data){
+        if(data.key == id){
+          chat(data.anotherUser);
+        }
+      })
+    }.bind(this)).catch(function(error) {
+      console.error('Error writing new message to Firebase Database', error);
+    });
   }
 }
 
- 
-          
+}
