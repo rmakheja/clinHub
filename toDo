@@ -1,4 +1,4 @@
-new chat
+new chat - Done
 image, etc sending
 multi page
 encrypted storing
@@ -12,3 +12,10 @@ realtime(call loadMessages->chat)
 display recent messge in history
 toggle send button to be disabled when no message typed
 search user nd search messages
+scroll to the top on clicking any chat
+
+---------------------
+survey for patients
+admin login to add/delete user
+sync with the doc if required//(may be give functionality to download)
+restricted login to only let valid users login.

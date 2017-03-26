@@ -26,6 +26,14 @@
     <!-- Tile icon for Win8 -->
     <meta name="msapplication-TileColor" content="#3372DF">
     <meta name="msapplication-navbutton-color" content="#303F9F">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 
     <!-- Material Design Lite -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -37,29 +45,100 @@
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <style type="text/css">
+      .dropdown {
+          display: inline-block;
+      }
+      .dropdown-content {
+          display: none;
+          position: relative;
+          top:50px;
+          /*background-color: #f9f9f9;*/
+          min-width: 160px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+
+
+
+      .dropdown .dropbtn {
+          border: none;
+          outline: none;
+          /*color: white;*/
+          padding: 14px 16px;
+          background-color: inherit;
+      }
+
+
+      /* Links inside the dropdown */
+      .dropdown-content a {
+          color: black;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+      }
+
+      /* Change color of dropdown links on hover */
+      .dropdown-content a:hover {background-color: #f1f1f1}
+
+      /* Show the dropdown menu on hover */
+      .dropdown:hover .dropdown-content {
+          display: block;
+      }
+      .alignCenter {
+           text-align: center;   
+        /*transform: translate(-50%, -50%);*/
+      }
+    </style>
   </head>
 
   <body class="mdl-color--brown-100">
-    <header class="mdl-layout__header mdl-color-text--black mdl-color--brown-500">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">   
+    <header class="mdl-layout__header mdl-color-text--white mdl-color--orange-900">
       <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
         <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-          <h3><i class="fa fa-user-md" style="color:red"></i>ClinHub</h3>
+          <h3><i class="fa fa-user-md" style="color:white"></i>  ClinHub</h3>
         </div>
-        <div id="user-container">
-          <div hidden id="user-pic"></div>
-          <div hidden id="user-name"></div>
-          <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white" onclick="signOut()">
-            Sign-out
-          </button>
+      </div>
+      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+        <div class="mdl-color--orange-500 mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop" style="width: 100%">
+          <a href="index.html" class="mdl-layout__tab is-active">Messages</a>
+          <a href="physicians.html" class="mdl-layout__tab">Physicians</a>
+          <a href="locations.html" class="mdl-layout__tab">Locations</a>
+          <div id="user-container" class="dropdown">
+            <button hidden id="user-pic" class = "dropbtn">
+            </button>
+              <div class="dropdown-content">
+                  <a href="#">My Profile</a>
+                  <a href="#">Update Profile</a>
+                  <a href="#" id="sign-out" onclick="signOut()"> Sign-out </a>
+              </div>
+          </div>
         </div>
       </div>
     </header>
-    <div id = "login" class="container" style="position: absolute; top: 45%; margin:0 auto; text-align: center;"></div>
-    <div hidden id = "home" class ="mdl-color-text--black" >
+    <div hidden id = "login" class="container" style="position: absolute; top: 45%; margin:0 auto; text-align: center;">
+      <div class="omb_login">
+        <h3 class="omb_authTitle">Login</h3>
+        <div class="row omb_row-sm-offset-3 omb_socialButtons">
+          <button id="Fsign-in" class="mdl-button mdl-js-button mdl-button--fab" onclick="fsignIn()">
+            <i class="fa fa-facebook" style="color:red"></i>
+          </button>
+           <button id="Tsign-in" class="mdl-button mdl-js-button mdl-button--fab onclick="tsignIn()">
+            <i class="fa fa-twitter" style="color:red"></i>
+            </button>
+          <button id="Gsign-in" class="mdl-button mdl-js-button mdl-button--fab " onclick="gsignIn()">
+            <i class="fa fa-google" style="color:red"></i>
+          </button>
+        </div> 
+      </div>
+    </div>
+    <div id = "home" class ="mdl-color-text--black" >
 
-    <div class="container">
+    <div id = 'chatContainer' class="container">
       <div class="row " style="padding-top:40px;">
         <div class="col-md-8 panel panel-info" id="historyParent">
+
           <div class="panel-heading" >
               RECENT CHAT HISTORY
           </div>
@@ -67,41 +146,38 @@
             <ul class="media-list" id ="history"></ul>
           </div>
         </div>
-        
 
-        <div hidden class="col-md-8 panel panel-info" id = "chat">
-          <a class="pull-left" href="#">
-            <img class="media-object img-circle " id ="pic" style="max-height:40px;" src=""/>
-          </a>
-          <div class="panel-heading" id = "name">
+        <div hidden class="col-md-8 panel panel-success" id = "chat">
+        <div class="panel-success">
+        <i id ="back_arrow" class="material-icons" onclick="displayMessages()" style="font-size:25px;color:purple">arrow_back</i>
+
+          <div class="alignCenter" >
+            <img class="img-circle " id ="pic" style="max-height:50px;" src="">
+          
+          <div id = "name" class=""></div>
           </div>
+        </div>
+          
+
           <div class="panel-body">
             <ul class="media-list" id ="chatmsg"></ul>
           </div>
           <div class="panel-footer input-group">
-            <input type="text" class="form-control" placeholder="Enter Message" id= "new_message"/>
+            <textarea class="form-control" placeholder="Enter Message" id= "new_message" onkeydown="pressEnter(event)"></textarea>
             <span class="input-group-btn">
               <button class="btn btn-info" type="button" id= "sendBtn" value ="" onclick="saveMessage(this.value)">SEND</button>
             </span>
           </div>
         </div>
-        
-
-        
-
-
         <div class="col-md-4 panel panel-primary panel-heading">ONLINE USERS
           <div class="panel-body">
             <ul class="media-list" id = "user_list"></ul>
-          </div>
+          </div>  
         </div>
-
-
-
       </div>
     </div>
-    </div>
-</body>  	
+  </div>
+</body>   
   
 <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
 <script>
@@ -115,6 +191,9 @@
   };
   firebase.initializeApp(config);
 </script>
-  <script src="index.js"></script>
-
+<script src="index.js"></script>
+<script src="authenticate.js"></script>
+<script src="users.js"></script>
+<script src="messages.js"></script>
+<script src="chat.js"></script>
   </html>

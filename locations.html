@@ -1,0 +1,167 @@
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="ClinHub">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClinHub</title>
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Web Application Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ClinHub">
+    <meta name="theme-color" content="#303F9F">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ClinHub">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#303F9F">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Tile icon for Win8 -->
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <meta name="msapplication-navbutton-color" content="#303F9F">
+
+    <!-- Material Design Lite -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+    <!-- App Styling -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <style type="text/css">
+      .dropdown {
+          display: inline-block;
+      }
+      .dropdown-content {
+          display: none;
+          position: relative;
+          top:50px;
+          /*background-color: #f9f9f9;*/
+          min-width: 160px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+      .dropdown .dropbtn {
+          border: none;
+          outline: none;
+          /*color: white;*/
+          padding: 14px 16px;
+          background-color: inherit;
+      }
+
+
+      /* Links inside the dropdown */
+      .dropdown-content a {
+          color: black;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+      }
+
+      /* Change color of dropdown links on hover */
+      .dropdown-content a:hover {background-color: #f1f1f1}
+
+      /* Show the dropdown menu on hover */
+      .dropdown:hover .dropdown-content {
+          display: block;
+      }
+      .alignCenter {
+           text-align: center;   
+        /*transform: translate(-50%, -50%);*/
+      }
+    </style>
+  </head>
+
+  <body class="mdl-color--brown-100">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">   
+    <header class="mdl-layout__header mdl-color-text--white mdl-color--orange-900">
+      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+        <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+          <h3><i class="fa fa-user-md" style="color:white"></i>  ClinHub</h3>
+        </div>
+      </div>
+      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+        <div class="mdl-color--orange-500 mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop" style="width: 100%">
+          <a href="index.html" class="mdl-layout__tab">Messages</a>
+          <a href="physicians.html" class="mdl-layout__tab ">Physicians</a>
+          <a href="locations.html" class="mdl-layout__tab is-active">Locations</a>
+          <div id="user-container" class="dropdown">
+            <button hidden id="user-pic" class = "dropbtn">
+            </button>
+              <div class="dropdown-content">
+                  <a href="#">My Profile</a>
+                  <a href="#">Update Profile</a>
+                  <a href="#" id="sign-out" onclick="signOut()"> Sign-out </a>
+              </div>
+            <!-- <button id="user-pic" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"/>
+            <ul class="dropdown-menu">
+              <li><a href="#">HTML</a></li>
+              <li><a href="#">CSS</a></li>
+              <li><a href="#">JavaScript</a></li>
+              <li class="divider"></li>
+              <li><a href="#">About Us</a></li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+    </header>
+    <div hidden id = "login" class="container" style="position: absolute; top: 45%; margin:0 auto; text-align: center;">
+      <div class="omb_login">
+        <h3 class="omb_authTitle">Login</h3>
+        <div class="row omb_row-sm-offset-3 omb_socialButtons">
+          <button id="Fsign-in" class="mdl-button mdl-js-button mdl-button--fab" onclick="fsignIn()">
+            <i class="fa fa-facebook" style="color:red"></i>
+          </button>
+           <button id="Tsign-in" class="mdl-button mdl-js-button mdl-button--fab onclick="tsignIn()">
+            <i class="fa fa-twitter" style="color:red"></i>
+            </button>
+          <button id="Gsign-in" class="mdl-button mdl-js-button mdl-button--fab " onclick="gsignIn()">
+            <i class="fa fa-google" style="color:red"></i>
+          </button>
+        </div> 
+      </div>
+    </div>
+    <div id = "home" class ="mdl-color-text--black" style="align-content: center;">
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover" style="width: 100px; background: white" align="center">
+      <thead>
+        <tr class="success">
+          <th>Name</th>
+          <th>Cell Phone</th>
+        </tr>
+      </thead>
+      <tbody  id="location_list">
+      </tbody>
+    </table>
+  </div>
+  </div>
+</body>   
+  
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBqSFTzOw-QjM79Ll0u9ik4bYDRf7y0gHs",
+    authDomain: "clinhub-24309.firebaseapp.com",
+    databaseURL: "https://clinhub-24309.firebaseio.com",
+    storageBucket: "clinhub-24309.appspot.com",
+    messagingSenderId: "440022482925"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="index.js"></script>
+<script src="locations.js"></script>
+  </html>
