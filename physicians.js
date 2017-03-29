@@ -63,15 +63,19 @@ loadPhysicians = function(){
         //     '</div>'+
         //    '</div>'+
         // '</li>';
-        ul += '<tr><td>' + physician.role + '</td>' +
-              '<td id= "'+ physician.email+ '" onclick="contact(this.id)">'+physician.firstname+'</td>' +
+        // ul += '<tr><td>' + physician.role + '</td>' +
+        //       '<td id= "'+ physician.email+ '" onclick="contact(this.id)">'+physician.firstname+'</td>' +
+        //       '<td>'+physician.lastname+'</td>' +
+        //       '<td>'+physician.degree+'</td>' + 
+        //       '<td>'+ physician.department+'</td>' +
+        //       '<td>' + physician.division +'</td>'+
+        //       '<td>'+physician.email+'</td>' + 
+        //       '<td>'+ physician.cellphone+'</td>' +
+        //       '<td>' + physician.secondaryphone +'</td></tr>';
+        ul += '<tr class="item"><td id= "'+ physician.email+ '" onclick="contact(this.id)">'+physician.firstname+'</td>' +
               '<td>'+physician.lastname+'</td>' +
-              '<td>'+physician.degree+'</td>' + 
               '<td>'+ physician.department+'</td>' +
-              '<td>' + physician.division +'</td>'+
-              '<td>'+physician.email+'</td>' + 
-              '<td>'+ physician.cellphone+'</td>' +
-              '<td>' + physician.secondaryphone +'</td></tr>';
+              '<td>'+ physician.cellphone+'</td></tr>';
 
     });
    list.innerHTML = ul;
@@ -112,3 +116,9 @@ onAuthStateChanged = function(user) {
     userPic.hidden = true;
   }
 };
+
+sortDisplay = function(){
+  var param = document.getElementById("sort").value;
+  physicianList.sort(function(a,b) {return a[param] > b[param] ? 1 : ((b[param] > a[param]) ? -1 : 0);} );
+  displayPhysicians(); 
+}

@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
     <!-- Tile icon for Win8 -->
     <meta name="msapplication-TileColor" content="#3372DF">
     <meta name="msapplication-navbutton-color" content="#303F9F">
@@ -41,6 +42,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <style type="text/css">
+      .button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    /*padding: 16px 32px;*/
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+.button1 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;
+}
+
+.button1:hover {
+    background-color: #008CBA;
+    color: white;
+}
+
+
       .dropdown {
           display: inline-block;
       }
@@ -81,6 +108,28 @@
            text-align: center;   
         /*transform: translate(-50%, -50%);*/
       }
+      input[type=text] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    background-color: white;
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    /*padding: 12px 20px 12px 40px;*/
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    color: black; 
+    border: 2px solid #008CBA;
+}
+
+input[type=text]:focus {
+    width: 50%;
+    background-color: #008CBA;
+    color: white;
+}
+
     </style>
   </head>
 
@@ -141,18 +190,26 @@
     </div>
   </div> -->
   <div class="table-responsive">
-    <table class="table  table-bordered table-hover" style="background: white;">
+  <select class="button button1" id="sort" name="sort">
+    <option value="department">Department</option>
+    <option value="lastname">Lastname</option>
+    <option value="firstname">Firstname</option>
+  </select>
+  <button class="button button1" onclick="sortDisplay()">Sort</button>
+  <input type="text" name="search" placeholder="Search.." oninput="w3.filterHTML('#tablePhysicians', '.item', this.value)">
+
+    <table id="tablePhysicians" class="table  table-bordered table-hover" style="background: white;">
       <thead>
         <tr class="success">
-          <th>Role</th>
+          <!-- <th>Role</th> -->
           <th>First name</th>
           <th>Last name</th>
-          <th>Degree</th>
+          <!-- <th>Degree</th> -->
           <th>Department</th>
-          <th>Division</th>
-          <th>Email</th>
+          <!-- <th>Division</th>
+          <th>Email</th> -->
           <th>Cell Phone</th>
-          <th>Secondary Phone</th>
+          <!-- <th>Secondary Phone</th> -->
         </tr>
       </thead>
       <tbody  id="physician_list">
