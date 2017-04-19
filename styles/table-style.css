@@ -1,12 +1,12 @@
 table {
-  width: 100%;
+  /*width: 100%;*/
   /* border-collapse: collapse; */
   border-spacing: 0;
   table-layout: fixed;
   margin: auto;
   text-align: center;
   min-width: 500px;
-  word-break: break-word;
+  /*word-break: break-word;*/
   align-items: center;
   /* font-size: 35px; */
   font-weight: bolder;
