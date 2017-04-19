@@ -23,17 +23,13 @@
     <meta name="apple-mobile-web-app-title" content="ClinHub">
     <meta name="apple-mobile-web-app-status-bar-style" content="#303F9F">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
     <!-- Tile icon for Win8 -->
     <meta name="msapplication-TileColor" content="#3372DF">
     <meta name="msapplication-navbutton-color" content="#303F9F">
-    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
 
     <!-- Material Design Lite -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -45,78 +41,43 @@
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
-    <style type="text/css">
-      .dropdown {
-          display: inline-block;
-      }
-      .dropdown-content {
-          display: none;
-          position: relative;
-          top:50px;
-          /*background-color: #f9f9f9;*/
-          min-width: 160px;
-          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-          z-index: 1;
-        }
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/searchAndsort.css">
+    
 
-
-
-      .dropdown .dropbtn {
-          border: none;
-          outline: none;
-          /*color: white;*/
-          padding: 14px 16px;
-          background-color: inherit;
-      }
-
-
-      /* Links inside the dropdown */
-      .dropdown-content a {
-          color: black;
-          padding: 12px 16px;
-          text-decoration: none;
-          display: block;
-      }
-
-      /* Change color of dropdown links on hover */
-      .dropdown-content a:hover {background-color: #f1f1f1}
-
-      /* Show the dropdown menu on hover */
-      .dropdown:hover .dropdown-content {
-          display: block;
-      }
-      .alignCenter {
-           text-align: center;   
-        /*transform: translate(-50%, -50%);*/
-      }
-    </style>
+    <link rel="stylesheet" href="styles/searchAndsort.css">
+  <link rel = "stylesheet" href="styles/table-style.css"/>
+  <link rel="stylesheet" href="styles/temp.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://www.w3schools.com/lib/w3.js"></script>
   </head>
 
   <body class="mdl-color--brown-100">
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">   
-    <header class="mdl-layout__header mdl-color-text--white mdl-color--orange-900">
-      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-        <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-          <h3><i class="fa fa-user-md" style="color:white"></i>  ClinHub</h3>
-        </div>
-      </div>
-      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-        <div class="mdl-color--orange-500 mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop" style="width: 100%">
-          <a href="index.html" class="mdl-layout__tab is-active">Messages</a>
-          <a href="physicians.html" class="mdl-layout__tab">Physicians</a>
-          <a href="locations.html" class="mdl-layout__tab">Locations</a>
-          <div id="user-container" class="dropdown">
-            <button hidden id="user-pic" class = "dropbtn">
-            </button>
-              <div class="dropdown-content">
-                  <a href="#">My Profile</a>
-                  <a href="#">Update Profile</a>
-                  <a href="#" id="sign-out" onclick="signOut()"> Sign-out </a>
-              </div>
+    
+    <!-- <header class="mdl-layout__header mdl-color-text--white mdl-color--orange-900" id="bodyHeader">
+
+    </header> -->
+    <header id="header">
+    <h3><i class="fa fa-user-md" style="color:white"></i>  ClinHub</h3>
+    <nav id="nav">
+      <ul>
+        <li class="active"><a href="index.html">Messages</a></li>
+        <li><a href="temp.html">Physicians</a></li>
+        <li><a href="locations.html">Locations</a></li>
+        <li><a href="issues.html">Issues</a></li>
+        <li hidden class="dropdown" id="user-container">
+          <a href="javascript:void(0)" class="dropbtn" id="user-pic">Drop</a>
+          <div class="dropdown-content">
+            <a href="#">My profile</a>
+            <a href="#" id="sign-out" onclick="signOut()">Sign Out</a>
           </div>
-        </div>
-      </div>
-    </header>
+        </li>
+      </ul>
+
+      </nav>
+  </header>
     <div hidden id = "login" class="container" style="position: absolute; top: 45%; margin:0 auto; text-align: center;">
       <div class="omb_login">
         <h3 class="omb_authTitle">Login</h3>
@@ -137,7 +98,7 @@
 
     <div id = 'chatContainer' class="container">
       <div class="row " style="padding-top:40px;">
-        <div class="col-md-8 panel panel-info" id="historyParent">
+        <div class="col-md-8 panel panel-info scrollableWindow" id="historyParent" >
 
           <div class="panel-heading" >
               RECENT CHAT HISTORY
@@ -147,7 +108,7 @@
           </div>
         </div>
 
-        <div hidden class="col-md-8 panel panel-success" id = "chat">
+        <div hidden class="col-md-8 panel panel-success scrollableWindow" id = "chat">
         <div class="panel-success">
         <i id ="back_arrow" class="material-icons" onclick="displayMessages()" style="font-size:25px;color:purple">arrow_back</i>
 
@@ -159,8 +120,8 @@
         </div>
           
 
-          <div class="panel-body">
-            <ul class="media-list" id ="chatmsg"></ul>
+          <div class="panel-body" style="overflow: auto;height: 320px">
+            <ul class="media-list" id ="chatmsg"></ul> 
           </div>
           <div class="panel-footer input-group">
             <textarea class="form-control" placeholder="Enter Message" id= "new_message" onkeydown="pressEnter(event)"></textarea>
@@ -169,7 +130,7 @@
             </span>
           </div>
         </div>
-        <div class="col-md-4 panel panel-primary panel-heading">ONLINE USERS
+        <div class="col-md-4 panel panel-primary panel-heading scrollableWindow"  >ONLINE USERS
           <div class="panel-body">
             <ul class="media-list" id = "user_list"></ul>
           </div>  
@@ -191,9 +152,9 @@
   };
   firebase.initializeApp(config);
 </script>
-<script src="index.js"></script>
-<script src="authenticate.js"></script>
-<script src="users.js"></script>
-<script src="messages.js"></script>
-<script src="chat.js"></script>
+<script src="scripts/index.js"></script>
+<script src="scripts/authenticate.js"></script>
+<script src="scripts/users.js"></script>
+<script src="scripts/messages.js"></script>
+<script src="scripts/chat.js"></script>
   </html>

@@ -28,6 +28,8 @@ loadLocations = function(){
 
 displayLocations = function(){
   var list = document.getElementById('location_list');
+  if(list == null)
+      return;
   list.innerHTML = '';
   var ul = '';
   locationList.forEach(function(location){

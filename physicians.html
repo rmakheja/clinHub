@@ -11,160 +11,44 @@
 
     <!-- Web Application Manifest -->
     <link rel="manifest" href="manifest.json">
-
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="ClinHub">
     <meta name="theme-color" content="#303F9F">
-
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ClinHub">
     <meta name="apple-mobile-web-app-status-bar-style" content="#303F9F">
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://www.w3schools.com/lib/w3.js"></script>
     <!-- Tile icon for Win8 -->
     <meta name="msapplication-TileColor" content="#3372DF">
     <meta name="msapplication-navbutton-color" content="#303F9F">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Material Design Lite -->
+    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
-    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-
-    <!-- App Styling -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-    <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
-    <style type="text/css">
-      .button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    /*padding: 16px 32px;*/
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 12px;
-    margin: 4px 2px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    cursor: pointer;
-}
-.button1 {
-    background-color: white; 
-    color: black; 
-    border: 2px solid #008CBA;
-}
-
-.button1:hover {
-    background-color: #008CBA;
-    color: white;
-}
-
-
-      .dropdown {
-          display: inline-block;
-      }
-      .dropdown-content {
-          display: none;
-          position: relative;
-          top:50px;
-          /*background-color: #f9f9f9;*/
-          min-width: 160px;
-          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-          z-index: 1;
-        }
-      .dropdown .dropbtn {
-          border: none;
-          outline: none;
-          /*color: white;*/
-          padding: 14px 16px;
-          background-color: inherit;
-      }
-
-
-      /* Links inside the dropdown */
-      .dropdown-content a {
-          color: black;
-          padding: 12px 16px;
-          text-decoration: none;
-          display: block;
-      }
-
-      /* Change color of dropdown links on hover */
-      .dropdown-content a:hover {background-color: #f1f1f1}
-
-      /* Show the dropdown menu on hover */
-      .dropdown:hover .dropdown-content {
-          display: block;
-      }
-      .alignCenter {
-           text-align: center;   
-        /*transform: translate(-50%, -50%);*/
-      }
-      input[type=text] {
-    width: 130px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 12px;
-    background-color: white;
-    background-position: 10px 10px; 
-    background-repeat: no-repeat;
-    /*padding: 12px 20px 12px 40px;*/
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
-    color: black; 
-    border: 2px solid #008CBA;
-}
-
-input[type=text]:focus {
-    width: 50%;
-    background-color: #008CBA;
-    color: white;
-}
-
-    </style>
+    <link rel = "stylesheet" href="styles/table-style.css"/>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/searchAndsort.css">
+    <link rel="stylesheet" href="styles/index.css">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/bootstrap.css"/>
   </head>
 
   <body class="mdl-color--brown-100">
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">   
-    <header class="mdl-layout__header mdl-color-text--white mdl-color--orange-900">
-      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-        <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-          <h3><i class="fa fa-user-md" style="color:white"></i>  ClinHub</h3>
-        </div>
-      </div>
-      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-        <div class="mdl-color--orange-500 mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop" style="width: 100%">
-          <a href="index.html" class="mdl-layout__tab">Messages</a>
-          <a href="physicians.html" class="mdl-layout__tab is-active">Physicians</a>
-          <a href="locations.html" class="mdl-layout__tab">Locations</a>
-          <div id="user-container" class="dropdown">
-            <button hidden id="user-pic" class = "dropbtn">
-            </button>
-              <div class="dropdown-content">
-                  <a href="#">My Profile</a>
-                  <a href="#">Update Profile</a>
-                  <a href="#" id="sign-out" onclick="signOut()"> Sign-out </a>
-              </div>
-            <!-- <button id="user-pic" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"/>
-            <ul class="dropdown-menu">
-              <li><a href="#">HTML</a></li>
-              <li><a href="#">CSS</a></li>
-              <li><a href="#">JavaScript</a></li>
-              <li class="divider"></li>
-              <li><a href="#">About Us</a></li>
-            </ul> -->
-          </div>
-        </div>
-      </div>
+    
+    <header class="mdl-layout__header mdl-color-text--white mdl-color--orange-900" id="bodyHeader">
+
     </header>
     <div hidden id = "login" class="container" style="position: absolute; top: 45%; margin:0 auto; text-align: center;">
       <div class="omb_login">
@@ -187,7 +71,7 @@ input[type=text]:focus {
             <ul class="media-list" id = "physician_list">
             </ul>
         </div>
-    </div>
+    </div> 
   </div> -->
   <div class="table-responsive">
   <select class="button button1" id="sort" name="sort">
@@ -198,7 +82,7 @@ input[type=text]:focus {
   <button class="button button1" onclick="sortDisplay()">Sort</button>
   <input type="text" name="search" placeholder="Search.." oninput="w3.filterHTML('#tablePhysicians', '.item', this.value)">
 
-    <table id="tablePhysicians" class="table  table-bordered table-hover" style="background: white;">
+    <table id="tablePhysicians">
       <thead>
         <tr class="success">
           <!-- <th>Role</th> -->
@@ -231,7 +115,7 @@ input[type=text]:focus {
   };
   firebase.initializeApp(config);
 </script>
-<script src="index.js"></script>
-<script src="physicians.js"></script>
-<script src="chat.js"></script>
+<script src="scripts/index.js"></script>
+<script src="scripts/physicians.js"></script>
+<script src="scripts/chat.js"></script>
   </html>

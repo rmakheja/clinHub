@@ -1,0 +1,41 @@
+table {
+  width: 100%;
+  /* border-collapse: collapse; */
+  border-spacing: 0;
+  table-layout: fixed;
+  margin: auto;
+  text-align: center;
+  min-width: 500px;
+  word-break: break-word;
+  align-items: center;
+  /* font-size: 35px; */
+  font-weight: bolder;
+  color: brown;
+}
+
+th {
+  background: #E65100;
+  padding: 10px;
+  box-sizing: border-box;
+  color: white;
+  border: 1px solid #ccc;
+}
+
+td {
+  background: transparent;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+}
+
+tr {background: antiquewhite;}
+
+tr:hover {
+  background: #ccc;
+}
+/*@media screen and (min-width: 410 px)
+.table-responsive {
+    overflow-x: auto;
+    overflow-y: auto;
+    background-color:black;
+}*/

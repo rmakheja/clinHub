@@ -13,9 +13,13 @@ display recent messge in history
 toggle send button to be disabled when no message typed
 search user nd search messages
 scroll to the top on clicking any chat
-
+report issues tab(link to github)
+QR code/email link
 ---------------------
 survey for patients
 admin login to add/delete user
 sync with the doc if required//(may be give functionality to download)
 restricted login to only let valid users login.
+
+-----------
+is_active not working

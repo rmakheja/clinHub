@@ -29,6 +29,7 @@ chat =function(id){
                 '<br/><hr/></div></li>';
         }
         chatHolder.innerHTML=ul;
+        chatHolder.parentElement.scrollTop = chatHolder.parentElement.scrollHeight;
     };
   }
 //new chat

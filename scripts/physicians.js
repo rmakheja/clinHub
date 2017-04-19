@@ -95,7 +95,7 @@ onAuthStateChanged = function(user) {
     userPic.hidden = false;
     var profilePicUrl = user.photoURL; 
     currentUser = user;
-    userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
+    userPic.style.background = 'url(' + profilePicUrl + ')';
     physicianList = [];
     loadPhysicians().then(function(){
       displayPhysicians();
