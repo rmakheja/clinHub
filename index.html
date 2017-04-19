@@ -26,7 +26,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://www.w3schools.com/lib/w3.js"></script>
     <!-- Tile icon for Win8 -->
     <meta name="msapplication-TileColor" content="#3372DF">
     <meta name="msapplication-navbutton-color" content="#303F9F">
@@ -67,8 +66,8 @@
         <li><a href="temp.html">Physicians</a></li>
         <li><a href="locations.html">Locations</a></li>
         <li><a href="issues.html">Issues</a></li>
-        <li hidden class="dropdown" id="user-container">
-          <a href="javascript:void(0)" class="dropbtn" id="user-pic">Drop</a>
+        <li class="dropdown" id="user-container">
+          <div hidden class="dropbtn" id="user-pic"></div>
           <div class="dropdown-content">
             <a href="#">My profile</a>
             <a href="#" id="sign-out" onclick="signOut()">Sign Out</a>
@@ -97,10 +96,10 @@
     <div hidden id = "home" class ="mdl-color-text--black" >
 
     <div id = 'chatContainer' class="container">
-      <div class="row " style="padding-top:40px;">
-        <div class="col-md-8 panel panel-info scrollableWindow" id="historyParent" >
+      <div class="row" style="padding-top:40px;">
+        <div class="col-md-8 panel panel-info scrollableWindow" id="historyParent">
 
-          <div class="panel-heading" >
+          <div class="panel-heading">
               RECENT CHAT HISTORY
           </div>
           <div class="panel-body">

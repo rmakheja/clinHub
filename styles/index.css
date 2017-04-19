@@ -123,14 +123,10 @@ main, #messages-card {
   justify-content: space-between;
 }
 #user-container {
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  top: 22px;
-  width: 100%;
+  position: relative;
+  top: 9px;
   right: 0;
   padding-left: 10px;
-  justify-content: flex-end;
   padding-right: 10px;
 }
 #user-container #user-pic {
