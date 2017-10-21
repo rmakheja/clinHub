@@ -122,7 +122,7 @@ main, #messages-card {
   background: linear-gradient(white, #f9f9f9);
   justify-content: space-between;
 }
-#user-container {
+/*#user-container {
   position: relative;
   top: 9px;
   right: 0;
@@ -146,7 +146,7 @@ main, #messages-card {
   padding-right: 10px;
   padding-left: 20px;
 }
-#image-form #submitImage {
+*/#image-form #submitImage {
   width: auto;
   padding: 0 6px 0 1px;
   min-width: 0;
@@ -166,7 +166,7 @@ main, #messages-card {
     height: 113px;
     padding-bottom: 80px !important;
   }
-  #user-container {
+  /*#user-container {
     top: 72px;
     background-color: rgb(3,155,229);
     height: 38px;
@@ -178,7 +178,7 @@ main, #messages-card {
     width: 33px;
     height: 33px;
     background-size: 33px;
-  }
+  }*/
 }
 .mdl-textfield__label:after {
   background-color: #0288D1;
@@ -207,3 +207,12 @@ main, #messages-card {
             transform: translate(-12px, -12px);
     line-height: 24px;
     width: 24px;  }
+ .panel-heading .material-icons{
+    top: initial !important;
+    color: brown !important;
+    bottom: 5 !important
+}
+ .panel-heading {
+    color: brown !important;
+ }
+}

@@ -31,12 +31,12 @@
     border-radius: 4px;
     font-size: 12px;
     background-color: white;
-    background-position: 10px 10px; 
+    background-position: 10px 10px;
     background-repeat: no-repeat;
-    /*padding: 12px 20px 12px 40px;*/
+    /* padding: 12px 20px 12px 40px; */
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
-    color: black; 
+    color: black;
     border: 2px solid #008CBA;
 }
 

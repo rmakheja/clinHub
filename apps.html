@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=0.8">
+  <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="ClinHub">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClinHub</title>
+    <link rel="icon" href="/images/icon16.png" />
+
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Web Application Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+  <link rel="stylesheet" href="styles/searchAndsort.css">
+  <link rel = "stylesheet" href="styles/table-style.css"/>
+  <link rel="stylesheet" href="styles/header.css">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://www.w3schools.com/lib/w3.js"></script>
+</head>
+<body>
+  <header id="header">
+  </header>
+<div hidden id = "login" class="container" style="position: absolute; top: 45%; margin:0 auto; text-align: center; padding-left: 45%">
+      <div class="omb_login">
+        <h3 class="omb_authTitle">Login</h3>
+        <div class="row omb_row-sm-offset-3 omb_socialButtons">
+          <button id="Fsign-in" class="mdl-button mdl-js-button mdl-button--fab" onclick="fsignIn()">
+            <i class="fa fa-facebook" style="color:red"></i>
+          </button>
+           <button id="Tsign-in" class="mdl-button mdl-js-button mdl-button--fab onclick="tsignIn()">
+            <i class="fa fa-twitter" style="color:red"></i>
+            </button>
+          <button id="Gsign-in" class="mdl-button mdl-js-button mdl-button--fab " onclick="gsignIn()">
+            <i class="fa fa-google" style="color:red"></i>
+          </button>
+        </div> 
+      </div>
+    </div>
+    <div hidden id = "home" class ="mdl-color-text--black" >
+        <!-- <div class="container panel-body">
+            <ul class="media-list" id = "physician_list">
+            </ul>
+        </div>
+    </div> 
+  </div> -->
+  <div class="table-responsive" style="margin: 0px auto;
+    display:block;">
+<input type="text" name="search" placeholder="Search.." oninput="w3.filterHTML('#tableApps', '.item', this.value) ">
+
+    <table style="width: 80%;" id="tableApps">
+      
+      <tbody  id="appContent">
+      </tbody>
+    </table>
+  </div>
+  </div>
+</body>   
+  
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBqSFTzOw-QjM79Ll0u9ik4bYDRf7y0gHs",
+    authDomain: "clinhub-24309.firebaseapp.com",
+    databaseURL: "https://clinhub-24309.firebaseio.com",
+    storageBucket: "clinhub-24309.appspot.com",
+    messagingSenderId: "440022482925"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="scripts/index.js"></script>
+<script src="scripts/apps.js"></script>
+</html>

@@ -4,27 +4,40 @@ onAuthStateChanged = function(user) {
   var home = document.getElementById('home');
   var login = document.getElementById("login");
   var userPic = document.getElementById('user-pic');
-  if (user) { 
+  var userPic1 = document.getElementById('user-pic1');
+  var signOut = document.getElementById('sign-out');
+  document.getElementById('msg_mi').className = "active"
+  if (user) {
+    
     login.hidden = true;
-    userPic.hidden = false;
+    signOut.hidden = false;
     var profilePicUrl = user.photoURL; 
     currentUser = user;
-    userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
+    // userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
+    userPic.src = profilePicUrl;
+    userPic1.src = profilePicUrl;
     messageList = [];
     userList = [];
     var id = sessionStorage.getItem('chat_id'); 
     if(id != null) {
         loadUsers().then(function(){
+
+          displayUserList();
           loadMessages().then(function(){chat(id)}).catch(function(error){
             console.log("some error - " + error);
             });
         }).catch(function(error){
             console.log("some error - " + error);
             });
+
     }
     else {
       loadUsers().then(function(){
-      isUserPresent();
+      if(this.newUser){
+        this.addUser();
+      }
+      updateUrl(profilePicUrl);
+      this.saveMessagingDeviceToken();
       displayUserList();
       loadMessages().then(function(){
         displayMessages()
@@ -36,17 +49,21 @@ onAuthStateChanged = function(user) {
       });  
   }
     home.hidden = false;
+    // We save the Firebase Messaging Device token and enable notifications.
     
   } else {
-    
     messageList = [];
     userList = [];
+    appList = [];
     currentUser = '';
     login.hidden = false;
     home.hidden = true;
-    userPic.hidden = true;
+    signOut.hidden = true;
+    userPic.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
+    userPic1.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg;"
   }
 };
+
 
 
 

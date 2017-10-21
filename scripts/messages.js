@@ -34,7 +34,6 @@ loadMessages = function(){
    return new Promise(function(res, rej){
        messageRef.on("value", function(snapshot) {
           var threads = snapshot.val();
-          console.log(threads);
           messageList = [];
           for (var threadId in threads)
           {
@@ -49,12 +48,12 @@ loadMessages = function(){
                     msgList.push(msgObject);
                 }
                 
-              if(user1 == currentUser.email)
+              if(user1 == currentUser.key)
               {
                 var thread = new messageThreadClass(threadId,msgList,user2);
                 messageList.push(thread);
               }
-              else if(user2 == currentUser.email) {
+              else if(user2 == currentUser.key) {
                 var thread = new messageThreadClass(threadId,msgList,user1);
                 messageList.push(thread);
               }
@@ -78,16 +77,16 @@ displayMessages = function(){
   msgDiv.innerHTML='';
   var ul ='';
   for(var thread in messageList) {
-    userList.forEach(function(data){
-      if(data.email == messageList[thread].anotherUser)
+    userList.forEach(function(user){
+      if(user.key == messageList[thread].anotherUser)
         {
           ul +='<li class="media" id = "'+messageList[thread].anotherUser+'"onclick="chat(this.id)">'+
                 '<div class="media-left">'+
                   '<a class="pull-left" href="#">'+
-                    '<img class="media-object img-circle " style="max-height:50px;" src="'+ data.picUrl+'"></a>'+
+                    '<img class="media-object img-circle " style="max-height:50px;" src="'+ user.picUrl+'"></a>'+
                  '</div>'+
                 '<div class="media-body">'+
-                    '<h4 class="media-heading" >'+data.name+'</h4>'+
+                    '<h6 class="media-heading" >'+user.firstname + ' ' + user.lastname +'</h6>'+
                     '<p>'+messageList[thread].messages[messageList[thread].messages.length - 1].text +'</p>'+ 
               //'<br />'+
               //'<small class="text-muted">'+data.name +' </small>'+
@@ -102,48 +101,3 @@ displayMessages = function(){
     };
     msgDiv.innerHTML= msgDiv.innerHTML + ul;
 };
-saveMessage = function(id){
-  //this.preventDefault();
-  // Check that the user entered a message and is signed in.
-  var messageInput = document.getElementById("new_message");
-  var type = id.substring(0, 8);
-  id = id.substring(8);
-  if (messageInput.value) {
-    if(type == "email : "){
-      messageRef.push({
-      messages :{
-        0:{
-          from: currentUser.displayName,
-          text: messageInput.value
-        }
-      },
-      user1: currentUser.email, 
-      user2: id
-    }).then(function() {
-      resetMaterialTextfield(messageInput);
-      chat(id)
-    }.bind(this)).catch(function(error) {
-      console.error('Error writing new message to Firebase Database', error);
-    });
-    }
-    else {
-    var threadRef = messageRef.child(id).child("messages");
-    //threadRef.on("child_added",chat)
-      threadRef.push({
-      from: currentUser.displayName,
-      text: messageInput.value
-      
-    }).then(function() {
-      resetMaterialTextfield(messageInput);
-      messageList.forEach(function(data){
-        if(data.key == id){
-          chat(data.anotherUser);
-        }
-      })
-    }.bind(this)).catch(function(error) {
-      console.error('Error writing new message to Firebase Database', error);
-    });
-  }
-}
-
-}

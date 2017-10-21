@@ -1,88 +1,6 @@
-
-PhysicianClass = class{
-  //constructor(key,role,firstname,lastname,degree,department,division,email,cellphone,secondaryphone){
-    constructor(key,object){
-    this.key = key
-    this.role = object["role"]
-    this.firstname = object["firstname"]
-    this.lastname =object["lastname"]
-    this.degree = object["degree"]
-    this.department = object["department"]
-    this.division = object["division"]
-    this.email = object["email"]
-    this.cellphone = object["cellPhone"]
-    //this.secondaryphone = object["secondaryPhone"]
-    this.secondaryphone = ''
-    this.picUrl = object["picurl"]
-  }
-};
-loadPhysicians = function(){
-  physicianList = [];
-  physicianRef = firebase.database().ref('physicians/');
-    return new Promise(function(res, rej){
-        physicianRef.on("value", function(snapshot) {
-        var physicians = snapshot.val();
-          for (var physicianId in physicians)
-          {
-             if(physicians.hasOwnProperty(physicianId)){
-               var physician = new PhysicianClass(physicianId, physicians[physicianId]); 
-               physicianList.push(physician);
-              }
-          }
-        res();
-        }, function (error) {
-          console.log("Error: " + error.code);
-          rej(error);
-      });
-    });  
-};
-
-  displayPhysicians = function(){
-    
-    var list = document.getElementById('physician_list');
-    list.innerHTML = '';
-    var ul = '';
-    physicianList.forEach(function(physician){
-
-      if(physician.email != currentUser.email)
-        // ul += '<li id="'+physician.email+'"class="media"'+'" onclick="contact(this.id)">'+
-        //     '<div class="media-body">'+
-        //       '<div class="media">'+
-        //        '<a class="pull-left" href="#">'+
-        //          '<img class="media-object img-circle" style="max-height:40px;" src="'+physician.picUrl+'" />'+
-        //         '</a>'+
-        //          '<div class="media-body">'+
-        //             '<h5>'+physician.firstname + ' '+ physician.lastname+' ('+ physician.degree+') </h5>'+
-        //          '<small class="text-muted">'+physician.role+', '+ physician.department+'</small></br>'+
-        //          '<small class="text-muted"> Division: '+physician.division+'</small></br>'+
-        //          '<small class="text-muted"> Email: '+physician.email+'</small></br>'+
-        //          '<small class="text-muted"> cellphone: '+physician.cellphone+'</small></br>'+
-        //          '<small class="text-muted"> Secondary Phone: '+physician.secondaryphone+'</small></br>'+
-
-        //       '</div>'+
-        //     '</div>'+
-        //    '</div>'+
-        // '</li>';
-        // ul += '<tr><td>' + physician.role + '</td>' +
-        //       '<td id= "'+ physician.email+ '" onclick="contact(this.id)">'+physician.firstname+'</td>' +
-        //       '<td>'+physician.lastname+'</td>' +
-        //       '<td>'+physician.degree+'</td>' + 
-        //       '<td>'+ physician.department+'</td>' +
-        //       '<td>' + physician.division +'</td>'+
-        //       '<td>'+physician.email+'</td>' + 
-        //       '<td>'+ physician.cellphone+'</td>' +
-        //       '<td>' + physician.secondaryphone +'</td></tr>';
-        ul += '<tr class="item"><td id= "'+ physician.email+ '" onclick="contact(this.id)">'+physician.firstname+'</td>' +
-              '<td>'+physician.lastname+'</td>' +
-              '<td>'+ physician.department+'</td>' +
-              '<td>'+ physician.cellphone+'</td></tr>';
-
-    });
-   list.innerHTML = ul;
-  };
   
-contact = function(email){
-    sessionStorage.setItem('chat_id', email);
+contact = function(key){
+    sessionStorage.setItem('chat_id', key);
     window.location.replace("index.html");
 }
 
@@ -90,18 +8,23 @@ onAuthStateChanged = function(user) {
   var home = document.getElementById('home');
   var login = document.getElementById("login");
   var userPic = document.getElementById('user-pic');
+  var userPic1 = document.getElementById('user-pic1');
+  var signOut = document.getElementById('sign-out');
+  document.getElementById('usr_mi').className = "active"
   if (user) { 
     login.hidden = true;
-    userPic.hidden = false;
+    signOut.hidden = false;
     var profilePicUrl = user.photoURL; 
     currentUser = user;
-    userPic.style.background = 'url(' + profilePicUrl + ')';
-    physicianList = [];
-    loadPhysicians().then(function(){
-      displayPhysicians();
-      }).catch(function(error){
-        console.log("some error - " + error);
-      });  
+    // userPic.style.background = 'url(' + profilePicUrl + ')';
+    userPic.src = profilePicUrl;
+    userPic1.src = profilePicUrl;
+    
+    loadUsers().then(function(){
+      displayUsers();
+    }).catch(function(error){
+            console.log("some error - " + error);
+      });
     home.hidden = false;
     
   } else {
@@ -110,15 +33,110 @@ onAuthStateChanged = function(user) {
     userList = [];
     physicianList = [];
     locationList = [];
+    appList = [];
     currentUser = '';
     login.hidden = false;
     home.hidden = true;
-    userPic.hidden = true;
+    signOut.hidden = true;
+    userPic.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
+    userPic1.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg;"
   }
 };
 
 sortDisplay = function(){
   var param = document.getElementById("sort").value;
-  physicianList.sort(function(a,b) {return a[param] > b[param] ? 1 : ((b[param] > a[param]) ? -1 : 0);} );
-  displayPhysicians(); 
+  userList.sort(function(a,b) {return a[param] > b[param] ? 1 : ((b[param] > a[param]) ? -1 : 0);} );
+  // displayPhysicians(); 
+  displayUsers();
+}
+
+
+displayUsers = function(){
+    
+    var list = document.getElementById('physician_list');
+    list.innerHTML = '';
+    var ul = '';
+    ul+='<tr class="item" id = "new" contentEditable = true>'+
+          '<td  contentEditable = false><i class="fa fa-plus" style="color:red" onclick="addUser()"></i></td>'+
+          '<td> </td><td> </td><td> </td><td>  </td><td  contentEditable = false></td></tr>'
+    userList.forEach(function(user){
+        ul += '<tr class="item" id = "'+user.key+'"><td  contentEditable = false><i class="fa fa-edit" style="color:red" onclick="edit('+ user.key+')"></i></td><td onclick="contact('+ user.key +')">'+user.firstname+'</td>' +
+              '<td>'+user.lastname+'</td>' +
+              '<td>'+ user.department+'</td>' +
+              '<td>'+ user.cellphone+'</td>'+
+              '<td  contentEditable = false><i class="fa fa-close" style="color:red" onclick="deleteUser('+ user.key+')"></i></td></tr>';
+
+    });
+   list.innerHTML = ul;
+  };
+edit = function(id){
+  console.log(id)
+  row = document.getElementById(id);
+  row.contentEditable = true;
+  cols = row.getElementsByTagName("td")
+  col = cols[0]
+  col.innerHTML = '<td><i class="fa fa-upload" style="color:red" onclick="save('+ id+')"></i></td>'
+  nameCol = cols[1]
+  nameCol.onclick = "";
+}
+
+save = function(id){
+  row = document.getElementById(id);
+  row.contentEditable = false;
+  cols = row.getElementsByTagName("td")
+  //save the row
+  userRef = firebase.database().ref('users/'+id)
+  userRef.update({
+    "firstname" : cols[1].innerText,
+    "lastname" :  cols[2].innerText,
+    "department" : cols[3].innerText,
+    "cellPhone" : cols[4].innerText
+  })
+
+  col = cols[0]
+  col.innerHTML = '<td><i class="fa fa-edit" style="color:red" onclick="edit('+ id+')"></i></td>'
+  nameCol = cols[1]
+  nameCol.onclick = '"contact('+id+')"';
+}
+
+deleteUser = function(id){
+  if(confirm("Are you sure you want to proceed for deletion")){
+    userRef = firebase.database().ref('users/'+id)
+    userRef.remove();
+    row = document.getElementById(id);
+    table = row.parentElement;
+    table.removeChild(row);
+  }
+}
+addUser = function(){
+  id = this.getId();
+  newRow = document.getElementById("new")
+  cols = newRow.getElementsByTagName("td")
+  userRef = firebase.database().ref('users/'+id)
+  userRef.set({
+    "firstname" : cols[1].innerText,
+    "lastname" :  cols[2].innerText,
+    "department" : cols[3].innerText,
+    "cellPhone" : cols[4].innerText,
+    "role" :" ",
+    "degree" : " ",
+    "division" : " ",
+    "email" : " ",
+    "secondaryphone" : " ",
+    "picurl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"
+  })
+  table = newRow.parentElement
+  
+  newR ='<tr class="item" id = "new" contentEditable = true>'+
+          '<td contentEditable = false><i class="fa fa-plus" style="color:red" onclick="addUser()"></i></td>'+
+          '<td> </td><td> </td><td> </td><td>  </td><td></td></tr>'+
+          '<tr class="item" id = "'+id+'"><td><i class="fa fa-edit" style="color:red" onclick="edit('+ id +')"></i></td><td onclick="contact('+ id +')">'+cols[1].innerText+'</td>' +
+              '<td>'+cols[2].innerText+'</td>' +
+              '<td>'+ cols[3].innerText+'</td>' +
+              '<td>'+cols[4].innerText+'</td>'+
+              '<td  contentEditable = false><i class="fa fa-close" style="color:red" onclick="deleteUser('+ id+')"></i></td></tr>';
+  table.removeChild(newRow)
+  table.innerHTML = newR + table.innerHTML
+
+
 }

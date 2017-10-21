@@ -5,6 +5,8 @@
     <meta name="description" content="ClinHub">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClinHub</title>
+    <link rel="icon" href="/images/icon16.png" />
+
 
     <!-- Disable tap highlight on IE -->
     <meta name="msapplication-tap-highlight" content="no">
@@ -38,44 +40,18 @@
     <!-- App Styling -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="styles/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- <link href="assets/css/bootstrap.css" rel="stylesheet" /> -->
     <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="styles/searchAndsort.css">
-    
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
 
     <link rel="stylesheet" href="styles/searchAndsort.css">
-  <link rel = "stylesheet" href="styles/table-style.css"/>
-  <link rel="stylesheet" href="styles/temp.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://www.w3schools.com/lib/w3.js"></script>
   </head>
 
   <body class="mdl-color--brown-100">
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">   
-    
-    <!-- <header class="mdl-layout__header mdl-color-text--white mdl-color--orange-900" id="bodyHeader">
-
-    </header> -->
     <header id="header">
-    <h3><i class="fa fa-user-md" style="color:white"></i>  ClinHub</h3>
-    <nav id="nav">
-      <ul>
-        <li class="active"><a href="index.html">Messages</a></li>
-        <li><a href="temp.html">Physicians</a></li>
-        <li><a href="locations.html">Locations</a></li>
-        <li><a href="issues.html">Issues</a></li>
-        <li class="dropdown" id="user-container">
-          <div hidden class="dropbtn" id="user-pic"></div>
-          <div class="dropdown-content">
-            <a href="#">My profile</a>
-            <a href="#" id="sign-out" onclick="signOut()">Sign Out</a>
-          </div>
-        </li>
-      </ul>
-
-      </nav>
   </header>
     <div hidden id = "login" class="container" style="position: absolute; top: 45%; margin:0 auto; text-align: center;">
       <div class="omb_login">
@@ -129,8 +105,10 @@
             </span>
           </div>
         </div>
-        <div class="col-md-4 panel panel-primary panel-heading scrollableWindow"  >ONLINE USERS
+        <div class="col-md-4 panel panel-primary panel-heading scrollableWindow"  >USERS
           <div class="panel-body">
+          <input type="text" name="search" placeholder="Search.." oninput="w3.filterHTML('#user_list', '.item', this.value)">
+
             <ul class="media-list" id = "user_list"></ul>
           </div>  
         </div>
@@ -156,4 +134,5 @@
 <script src="scripts/users.js"></script>
 <script src="scripts/messages.js"></script>
 <script src="scripts/chat.js"></script>
+
   </html>

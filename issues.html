@@ -5,6 +5,7 @@
     <meta name="description" content="ClinHub">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClinHub</title>
+    <link rel="icon" href="/images/icon16.png" />
 
     <!-- Disable tap highlight on IE -->
     <meta name="msapplication-tap-highlight" content="no">
@@ -42,14 +43,20 @@
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     
     <link rel="stylesheet" href="styles/style.css">
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/header.css">
+    
   </head>
 
   <body class="mdl-color--brown-100">
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">   
-    
+    <!-- 
     <header class="mdl-layout__header mdl-color-text--white mdl-color--orange-900" id="bodyHeader">
 
-    </header>
+    </header> -->
+    <header id="header">
+    
+  </header>
     <div hidden id = "login" class="container" style="position: absolute; top: 45%; margin:0 auto; text-align: center;">
       <div class="omb_login">
         <h3 class="omb_authTitle">Login</h3>
@@ -67,8 +74,8 @@
       </div>
     </div>
     <div hidden id = "home" class ="mdl-color-text--black" style="align-content: center;">
+    
     <iframe width='800' height='700' frameborder='0' src="https://docs.google.com/spreadsheets/d/1q3psY9v_If3FMjG1NY4OzVbPdj84CZI6QvtV3aRJxKM/edit?usp=sharing"></iframe>
-    <!-- <iframe width='800' height='700' frameborder='0' src="https://github.com/rmakheja/clinHub/issues"></iframe> -->
   </div>
   </div>
   
@@ -86,6 +93,6 @@
   };
   firebase.initializeApp(config);
 </script>
-<script src="index.js"></script>
-<script src="locations.js"></script>
+<script src="scripts/index.js"></script>
+<script src="scripts/issues.js"></script>
   </html>

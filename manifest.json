@@ -4,4 +4,10 @@
   "start_url": "/index.html",
   "display": "standalone",
   "orientation": "portrait",
+   "gcm_sender_id": "103953800507",
+   "icons":[
+   {
+      "src": "images/icon16.png",
+      "type": "image/png"
+    }]
 }

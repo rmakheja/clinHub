@@ -28,7 +28,7 @@ body {
 	margin: 0px;
 	border: 0px;
 	padding: 0px;
-	width: 100%;
+	/*width: 100%;*/
 	background-blend-mode: overlay;
 }
 html {
@@ -37,7 +37,7 @@ html {
 	padding: 0px;
 	/* background-color: blue; */
 }
-header ul {
+header nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -76,12 +76,13 @@ li a, .dropbtn {
 }
 
 li a:hover, .dropdown:hover .dropbtn {
-    background-color:#ffc400;
+    /*background-color:#ffc400;*/
+    background-color: inherit;
 }
 
 li.dropdown {
     display: inline-block;
-    float:right;
+        
     position: absolute;
 }
 
@@ -107,3 +108,9 @@ li.dropdown {
 .dropdown:hover .dropdown-content {
     display: block;
 }	
+img#user-pic {
+    border-radius: 20px; 
+    width: 30px;
+    position: absolute;
+    float: right;
+}

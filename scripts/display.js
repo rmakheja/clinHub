@@ -15,6 +15,7 @@ displayLocations = function(){
   list.innerHTML = ul;
 };
 displayUserList = function(){
+  console.log(currentUser.key)
   var list = document.getElementById('user_list');
   list.innerHTML = '';
   var ul = '';

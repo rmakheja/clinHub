@@ -1,0 +1,112 @@
+#home{
+    padding-top: 150px;
+}
+
+header {
+  margin : 0px;
+  border:0px;
+  padding: 0px;
+  width: 100%;
+  height: 20%;
+  position: absolute;
+  display: block;
+}
+
+header h3 {
+  padding-left: 30px;
+  color: firebrick;
+  text-align: center;
+  font-size: 25px;
+  z-index: 1;
+}
+body {
+  background-image: url("/images/image3.jpg");
+  background-color: #d6e3a9;
+  margin: 0px;
+  border: 0px;
+  padding: 0px;
+  background-blend-mode: overlay;
+}
+html {
+  margin: 0px;
+  border: 0px;
+  padding: 0px;
+}
+.topnav {
+  overflow: hidden;
+  background-color: beige;
+}
+.topnav a :not(#profile){
+  display: block;
+}
+.topnav a {
+  float: left;
+  color: firebrick;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: bolder;
+}
+.topnav .active {
+    background-color: #f6b35a;
+}
+.topnav :hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav .icon {
+  /*display: none;*/
+}
+#profile {
+  display: none;
+}
+#iconSmall {
+  display:none; 
+}
+#iconLarge {
+  display: block;
+  background-color: beige !important;
+}
+@media screen and (max-width: 600px) {
+  .topnav a:not(.active ) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  
+  #iconLarge {
+    display:none; 
+  } 
+  #iconSmall {
+    display: block;
+    background-color: beige !important;
+  }
+  .topnav.responsive {position: relative;z-index: 1;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+} 
+img#user-pic {
+    border-radius: 20px;
+    width: 30px;
+    /* margin-left: 100%; */
+    /* float: right; */
+}
+img#user-pic1 {
+    border-radius: 20px;
+    width: 30px;
+    /* margin-left: 100%; */
+    /* float: right; */
+}

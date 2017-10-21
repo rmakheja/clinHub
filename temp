@@ -1,0 +1,25 @@
+Restricted updating userList - Grant access to update userList
+Editing/Adding other details for a user
+Each user can update its own details
+Logs of who added and deleted what
+if searched folder path doesn't exist and user tries to upload a file, it will be uploaded to the most recent correct path.
+
+Scheduler - will be better if I get to see it once how they do it now
+Payroll - address / Direct deposit
+Showcase the functionality
+
+2 people with same name : problems in dostinguishing the messages
+2 people with same email id: messes up the whole UI
+
+Log
+
+
+//Remove id dependency and generation
+//use uid
+//add new user
+// delete user => delete chats and everything
+
+
+
+//token to "toUser"
+//

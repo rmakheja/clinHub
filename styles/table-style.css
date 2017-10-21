@@ -1,5 +1,5 @@
 table {
-  /*width: 100%;*/
+  /*width: 80%;*/
   /* border-collapse: collapse; */
   border-spacing: 0;
   table-layout: fixed;
@@ -18,14 +18,14 @@ th {
   padding: 10px;
   box-sizing: border-box;
   color: white;
-  border: 1px solid #ccc;
+  border: 1px solid whitesmoke;
 }
 
 td {
   background: transparent;
   padding: 10px;
   box-sizing: border-box;
-  border: 1px solid #ccc;
+  border: 1px solid whitesmoke;
 }
 
 tr {background: antiquewhite;}

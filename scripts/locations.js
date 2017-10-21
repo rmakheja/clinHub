@@ -38,7 +38,7 @@ displayLocations = function(){
       //             '<h5>'+ location.name+' : '+ location.cellphone+'</h5>'+
       //         '</div>'+
       //     '</li>'
-      ul += '<tr><td>' + location.name + '</td><td>' + location.cellphone + '</td></tr>'
+      ul += '<tr class="item"><td>' + location.name + '</td><td>' + location.cellphone + '</td></tr>'
   });
   list.innerHTML = ul;
 };
@@ -47,12 +47,17 @@ onAuthStateChanged = function(user) {
   var home = document.getElementById('home');
   var login = document.getElementById("login");
   var userPic = document.getElementById('user-pic');
+  var userPic1 = document.getElementById('user-pic1');
+  var signOut = document.getElementById('sign-out');
+  document.getElementById('loc_mi').className = "active"
   if (user) { 
     login.hidden = true;
-    userPic.hidden = false;
+    signOut.hidden = false;
     var profilePicUrl = user.photoURL; 
     currentUser = user;
-    userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
+    // userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
+    userPic.src = profilePicUrl;
+    userPic1.src = profilePicUrl;
     locationList = [];
     loadLocations().then(function(){
       displayLocations();
@@ -67,9 +72,12 @@ onAuthStateChanged = function(user) {
     userList = [];
     physicianList = [];
     locationList = [];
+    appList = [];
     currentUser = '';
     login.hidden = false;
     home.hidden = true;
-    userPic.hidden = true;
+    signOut.hidden = true;
+    userPic.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
+    userPic1.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg;"
   }
 };
