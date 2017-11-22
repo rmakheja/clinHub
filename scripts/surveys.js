@@ -60,7 +60,7 @@ updateStatus = function(assignment, year){
   
   
   //if survey pair is in surveys that means survey is sent for that pair
-    if(!(attending in yearSurveys) || !(crna in yearSurveys[attending])) {
+    if(attending && crna && (!(attending in yearSurveys) || !(crna in yearSurveys[attending]))) {
       var facultyRef = firebase.database().ref('/surveys/'+ year + '/' + attending + "/" + assignment.crna  + "/");
       facultyRef.set({
         "date" : assignment.date,
@@ -77,7 +77,7 @@ updateStatus = function(assignment, year){
       }
     }
 
-  if(!(attending in yearSurveys) || !(resident in yearSurveys[attending])) {
+  if(attending && resident && (!(attending in yearSurveys) || !(resident in yearSurveys[attending]))) {
     var facultyRef = firebase.database().ref('/surveys/'+ year + '/' + attending + "/" + resident  + "/");
     facultyRef.set({
       "date" : assignment.date,
@@ -93,7 +93,7 @@ updateStatus = function(assignment, year){
     }
   }
 
-  if(!(crna in yearSurveys) || !(resident in yearSurveys[crna])) {
+  if(crna && resident && (!(crna in yearSurveys) || !(resident in yearSurveys[crna]))) {
     var crnaRef = firebase.database().ref('/surveys/' + year + '/' + crna + "/" + resident + "/");
     crnaRef.set({
       "date" : assignment.date,
@@ -110,7 +110,7 @@ updateStatus = function(assignment, year){
     }
   }
 
-  if(!(crna in yearSurveys) || !(attending in yearSurveys[crna])) {
+  if(attending && crna && (!(crna in yearSurveys) || !(attending in yearSurveys[crna]))) {
     var crnaRef = firebase.database().ref('/surveys/' + year + '/' + crna + "/" + attending + "/");
     crnaRef.set({
       "date" : assignment.date,
@@ -235,7 +235,7 @@ addFacultySurveys = function(){
   faculty = []
   
   for (var user in users_db){
-    if (users_db[user].role == "Faculty"){
+    if (users_db[user].role == "Faculty" && users_db[user].department == "Anesthesiology"){
       for(user1 in faculty){
         if(!(user in yearSurveys) || !(user1 in yearSurveys[user])) {
           var facultyRef = firebase.database().ref('/surveys/'+ year + '/' + user + "/" + user1  + "/");
@@ -285,9 +285,4 @@ updateURL = function(type){
   }
   surveyLinkRef = firebase.database().ref('/surveyLinks/'+type +'/');
   surveyLinkRef.set(url);
-}
-
-addSurgeon(){
-var facultyRef = firebase.database().ref('/surveys/'+ year + '/');  
-
 }

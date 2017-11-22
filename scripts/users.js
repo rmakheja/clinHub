@@ -4,13 +4,11 @@ var maxId = 0;
 
 updateUrl = function(url){
   if(url != currentUser.picUrl) {
-        // var refToUpdate = firebase.database().ref('users/'+ currentUser.key+'')
-        // refToUpdate.update({
-        //      "picurl": url
-        // });
-        console.log("Update pic");
+        var refToUpdate = firebase.database().ref('users/'+ currentUser.key+'/')
+        refToUpdate.update({
+             "picurl": url
+        });
       }
-  
 }
 
 addCurrentUser = function(){
@@ -57,9 +55,9 @@ displayUserList = function(){
   var list = document.getElementById('user_list');
   list.innerHTML = '';
   var ul = '';
-  for(var userId in users_db){
-      user = users_db[userId];
-      ul += '<li id="' + userId + '"class="media item"'+'" onclick="chat(this.id)">'+
+  for(var userId in user_values){
+      user = user_values[userId];
+      ul += '<li id="' + user.key + '"class="media item"'+'" onclick="chat(this.id)">'+
           '<div class="media-body">'+
             '<div class="media">'+
              '<a class="pull-left" href="#">'+
@@ -82,5 +80,8 @@ getId = function(){
 }
 
 getUserName = function(user){
-  return user.firstname + ' ' + user.lastname;
+  if(user != null)
+    return user.firstname + ' ' + user.lastname;
+  else
+    return " "
 }

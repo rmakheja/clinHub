@@ -1,28 +1,81 @@
-[debug] [2017-11-16T18:08:22.018Z] ----------------------------------------------------------------------
-[debug] [2017-11-16T18:08:22.018Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rashm\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
-[debug] [2017-11-16T18:08:22.018Z] CLI Version:   3.13.1
-[debug] [2017-11-16T18:08:22.018Z] Platform:      win32
-[debug] [2017-11-16T18:08:22.018Z] Node Version:  v6.9.2
-[debug] [2017-11-16T18:08:22.018Z] Time:          Thu Nov 16 2017 13:08:22 GMT-0500 (Eastern Standard Time)
-[debug] [2017-11-16T18:08:22.018Z] ----------------------------------------------------------------------
+[debug] [2017-11-22T04:58:44.067Z] ----------------------------------------------------------------------
+[debug] [2017-11-22T04:58:44.082Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rashm\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase deploy
+[debug] [2017-11-22T04:58:44.082Z] CLI Version:   3.13.1
+[debug] [2017-11-22T04:58:44.082Z] Platform:      win32
+[debug] [2017-11-22T04:58:44.082Z] Node Version:  v6.9.2
+[debug] [2017-11-22T04:58:44.082Z] Time:          Tue Nov 21 2017 23:58:44 GMT-0500 (Eastern Standard Time)
+[debug] [2017-11-22T04:58:44.082Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2017-11-16T18:08:22.034Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2017-11-16T18:08:22.034Z] > authorizing via signed-in user
-[debug] [2017-11-16T18:08:22.034Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/clinhub-24309  
- Thu Nov 16 2017 13:08:22 GMT-0500 (Eastern Standard Time)
-[debug] [2017-11-16T18:08:23.747Z] <<< HTTP RESPONSE 200
-[debug] [2017-11-16T18:08:23.750Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/clinhub-24309/tokens  
- Thu Nov 16 2017 13:08:23 GMT-0500 (Eastern Standard Time)
-[debug] [2017-11-16T18:08:25.654Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-22T04:58:44.098Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-11-22T04:58:44.098Z] > authorizing via signed-in user
+[debug] [2017-11-22T04:58:44.098Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2017-11-22T04:58:44.098Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token { refresh_token: '1/DvxzINQMI_6i7CIKyVhaMRUEMshE_diKDT3ROzL9PYM',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Tue Nov 21 2017 23:58:44 GMT-0500 (Eastern Standard Time)
+[debug] [2017-11-22T04:58:44.239Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-22T04:58:44.261Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/clinhub-24309  
+ Tue Nov 21 2017 23:58:44 GMT-0500 (Eastern Standard Time)
+[debug] [2017-11-22T04:58:44.645Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-22T04:58:44.645Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/clinhub-24309/tokens  
+ Tue Nov 21 2017 23:58:44 GMT-0500 (Eastern Standard Time)
+[debug] [2017-11-22T04:58:45.014Z] <<< HTTP RESPONSE 200
+[info] 4
 [info] 
-[info] === Serving from 'C:\Users\rashm\Desktop\clinHub'...
+[info] === Deploying to 'clinhub-24309'...
 [info] 
-[debug] [2017-11-16T18:08:25.659Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/clinhub-24309  
- Thu Nov 16 2017 13:08:25 GMT-0500 (Eastern Standard Time)
-[debug] [2017-11-16T18:08:25.915Z] <<< HTTP RESPONSE 200
-[debug] [2017-11-16T18:08:25.916Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/440022482925/clients/_:getWebAppConfig  
- Thu Nov 16 2017 13:08:25 GMT-0500 (Eastern Standard Time)
-[debug] [2017-11-16T18:08:26.221Z] <<< HTTP RESPONSE 200
-[info] i  hosting: Serving hosting files from: ./
-[info] +  hosting: Local server: http://localhost:5000
-
+[info] i  deploying database, storage, functions, hosting
+[info] i  database: checking rules syntax...
+[debug] [2017-11-22T04:58:45.577Z] >>> HTTP REQUEST PUT https://clinhub-24309.firebaseio.com/.settings/rules.json?dryRun=true {
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}
+ 
+ Tue Nov 21 2017 23:58:45 GMT-0500 (Eastern Standard Time)
+[debug] [2017-11-22T04:58:46.541Z] <<< HTTP RESPONSE 200
+[info] +  database: rules syntax is valid
+[debug] [2017-11-22T04:58:46.546Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/clinhub-24309  
+ Tue Nov 21 2017 23:58:46 GMT-0500 (Eastern Standard Time)
+[debug] [2017-11-22T04:58:46.894Z] <<< HTTP RESPONSE 200
+[info] i  storage: checking storage.rules for compilation errors...
+[debug] [2017-11-22T04:58:46.909Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/clinhub-24309:test { source: { files: [ [Object] ] } } 
+ Tue Nov 21 2017 23:58:46 GMT-0500 (Eastern Standard Time)
+[debug] [2017-11-22T04:58:47.126Z] <<< HTTP RESPONSE 200
+[info] +  storage: rules file storage.rules compiled successfully
+[debug] [2017-11-22T04:58:47.126Z] > [functions] package.json contents: {
+  "name": "clinhub-24309",
+  "description": "Firebase SDK for Cloud Functions codelab",
+  "dependencies": {
+    "@google-cloud/storage": "^0.6.1",
+    "@google-cloud/vision": "^0.12.0",
+    "child-process-promise": "^2.2.0",
+    "firebase-admin": "^4.1.1",
+    "firebase-functions": "^0.5.1"
+  },
+  "repository": {},
+  "license": "UNLICENSED"
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[info] i  runtimeconfig: ensuring necessary APIs are enabled...
+[debug] [2017-11-22T04:58:47.147Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/clinhub-24309?view=CONSUMER_VIEW  
+ Tue Nov 21 2017 23:58:47 GMT-0500 (Eastern Standard Time)
+[debug] [2017-11-22T04:58:47.147Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/clinhub-24309?view=CONSUMER_VIEW  
+ Tue Nov 21 2017 23:58:47 GMT-0500 (Eastern Standard Time)
+[debug] [2017-11-22T04:58:47.727Z] <<< HTTP RESPONSE 200
+[info] +  runtimeconfig: all necessary APIs are enabled
+[debug] [2017-11-22T04:58:47.749Z] <<< HTTP RESPONSE 200
+[info] +  functions: all necessary APIs are enabled
+[debug] [2017-11-22T04:58:47.749Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/clinhub-24309  
+ Tue Nov 21 2017 23:58:47 GMT-0500 (Eastern Standard Time)
+[debug] [2017-11-22T04:58:47.749Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/clinhub-24309/apiKeys  
+ Tue Nov 21 2017 23:58:47 GMT-0500 (Eastern Standard Time)
+[debug] [2017-11-22T04:58:48.026Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-22T04:58:48.127Z] <<< HTTP RESPONSE 200
+[info] i  storage: uploading rules storage.rules...
+[debug] [2017-11-22T04:58:48.146Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/clinhub-24309/rulesets { source: { files: [ [Object] ] } } 
+ Tue Nov 21 2017 23:58:48 GMT-0500 (Eastern Standard Time)
+[debug] [2017-11-22T04:58:48.464Z] <<< HTTP RESPONSE 200

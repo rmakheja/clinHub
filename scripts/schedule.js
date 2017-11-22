@@ -1,6 +1,5 @@
 
-selectedUsers = [];
-selectedRooms = [];
+optionsDropdown = '';
 currentDate = '';
 
 
@@ -21,7 +20,7 @@ onAuthStateChanged = function(user) {
     userPic1.src = profilePicUrl;
     loadSchedules().then(function(){
       loadLocations();
-      loadUsers();
+      loadUsers().then(function(){initOptions()})
     }).catch(function(error){
             console.log("some error - " + error);
       });
@@ -39,8 +38,7 @@ onAuthStateChanged = function(user) {
 };
 
 displaySchedule = function(){
-    selectedUsers = [];
-	selectedRooms = [];
+    
     currentDate = document.getElementById("date").value.toString()
 
     var list = document.getElementById("schedule_list")
@@ -58,55 +56,49 @@ displaySchedule = function(){
 	schedule_date = {}
 	if(currentDate in yearSchedules_db)
 		schedule_date = yearSchedules_db[currentDate]
-	
-    for(var room in schedule_date){
+	rooms = sortSchedule(schedule_date)
+	for(var ind in rooms){
+    	room = rooms[ind]
+    	if(room == " ")
+    		room_name == " "
+    	else 
+    		room_name  = locations_db[room].name
     	scheduleObject = schedule_date[room]
+
 	    ul += '<tr>'+
-	          '<td>'+ locations_db[room].name +'</td>' +
-	          '<td>'+ getUserName(users_db[scheduleObject.attending]) +'</td>' +
+	          '<td>'+ room_name +'</td>' +
+	          '<td>'+  getUserName(users_db[scheduleObject.attending]) +'</td>' +
 	          '<td>' + getUserName(users_db[scheduleObject.resident]) +'</td>'+
 	          '<td>' + getUserName(users_db[scheduleObject.crna]) +'</td>'+
+	          '<td>' + getUserName(users_db[scheduleObject.surgeon]) +'</td>'+
 	          '<td> </td></tr>';
-	    selectSchedule(schedule_date[room])
 	};
-	var options = '<tr id = "new">'+
-				  '<td> <select id = "room" name="Room">' + getRooms() + '</select></td>'+
-			 	  '<td> <select id = "attending" name="Attending">' + getUsers("Faculty") + '</select></td>'+
-			 	  '<td> <select id = "resident" name="Resident">' + getUsers("Resident") + '</select></td>'+
-			 	  '<td> <select id = "crna" name="CRNA">' + getUsers("CRNA") + '</select></td>'+
-			 	  '<td><i class="fa fa-plus" style="color:red" onclick="addAssignment()"></i></td>'+
-			 	  '</tr>';
-   list.innerHTML = options + ul;
+   list.innerHTML = optionsDropdown + ul;
 }
 
 getUsers = function(role){
-	options ='';
-	for (var user in users_db){
-		if (users_db[user].role == role && !selectedUsers.includes(user)){
-			options += getUserOption(users_db[user])
+	options = getBlankOption();
+	user_values.forEach(function(user){
+		if (user.role == role){
+			if(role != 'Faculty' || user.department == 'Anesthesiology')
+				options += getUserOption(user)
 		}
-	}
+	})
 	return options;
 }
 getRooms = function(){
-	options ='';
-	for (var roomId in locations_db){
-		var room = locations_db[roomId]
-		if (!selectedRooms.includes(roomId) && room.needsAssignment){
-			options += '<option value="' + roomId + '">' + room.name + '</option>'
-		}
-	}
+	options = '';
+	locations_values.forEach(function(room){
+		if(room.needsAssignment == "yes")
+			options += '<option value="' + room.key + '">' + room.name + '</option>'
+	})
 	return options;
 }
 getUserOption = function(user){
-	return '<option value="' + user.key + '">' + user.firstname + ' ' + user.lastname + '</option>'
+	return '<option value="' + user.key + '">' + getUserName(user) + '</option>'
 }
-
-selectSchedule = function(scheduleObject){
-	selectedUsers.push(scheduleObject.attending)
-	selectedUsers.push(scheduleObject.resident)
-	selectedUsers.push(scheduleObject.crna)
-	selectedRooms.push(scheduleObject.room)
+getBlankOption = function(){
+	return '<option value=" ">  </option>'
 }
 
 addAssignment = function(){
@@ -117,40 +109,56 @@ addAssignment = function(){
 	}
 	year = new Date(currentDate).getFullYear()
 	yearSchedules_db = schedules_db
-	table = document.getElementById('tableSchedule')
+	table = document.getElementById('schedule_list')
 	newR = document.getElementById('new')
 	var e = document.getElementById("room");
 	room = e.options[e.selectedIndex].value;
+	room_name = e.options[e.selectedIndex].text
 	e = document.getElementById("attending");
 	attending = e.options[e.selectedIndex].value;
+	attending_name = e.options[e.selectedIndex].text
 	e = document.getElementById("resident");
 	resident = e.options[e.selectedIndex].value;
+	resident_name = e.options[e.selectedIndex].text
 	e = document.getElementById("crna");
 	crna = e.options[e.selectedIndex].value;
+	crna_name = e.options[e.selectedIndex].text
+	e = document.getElementById("surgeon");
+	surgeon = e.options[e.selectedIndex].value;
+	surgeon_name = e.options[e.selectedIndex].text
+	
 	scheduleRef = firebase.database().ref('schedule/' + year + '/' + currentDate + '/' + room);
 	scheduleRef.set({
 		"attending" : attending,
 		"resident" : resident,
-		"crna" : crna
+		"crna" : crna,
+		"surgeon" : surgeon
 	})
 	var addRow = '<tr>'+
-	          	 '<td>'+ locations_db[room].name +'</td>' +
-	        	 '<td>'+ getUserName(users_db[attending]) +'</td>' +
-	        	 '<td>' + getUserName(users_db[resident]) +'</td>'+
-	        	 '<td>' + getUserName(users_db[crna]) +'</td>'+
+	          	 '<td>'+ room_name +'</td>' +
+	        	 '<td>'+ attending_name +'</td>' +
+	        	 '<td>' + resident_name +'</td>'+
+	        	 '<td>' + crna_name +'</td>'+
+	        	 '<td>' + surgeon_name +'</td>'+
 	        	 '<td> </td></tr>';
-	          
-	selectedUsers.push(attending)
-	selectedUsers.push(resident)
-	selectedUsers.push(crna)
-	selectedRooms.push(room)
+	table.removeChild(newR)
+	table.innerHTML =  optionsDropdown + addRow + table.innerHTML;
+}
+initOptions = function(){
+	optionsDropdown = '<tr id = "new"><td> <select id = "room" name="room">' + getRooms() + '</select></td>' +
+				 	  '<td> <select id = "attending" name="attending">' + getUsers("Faculty") + '</select></td>'+
+				 	  '<td> <select id = "resident" name="resident">' + getUsers("Resident") + '</select></td>'+
+				 	  '<td> <select id = "crna" name="crna">' + getUsers("CRNA") + '</select></td>'+
+				 	  '<td> <select id = "surgeon" name="surgeon">' + getUsers("Surgery") + '</select></td>'+
+				 	  '<td><i class="fa fa-plus" style="color:red" onclick="addAssignment()"></i></td></tr>'
 
-	var options = '<td> <select id = "room" name="room">' + getRooms() + '</select></td>' +
-			 	  '<td> <select id = "attending" name="attending">' + getUsers("Faculty") + '</select></td>'+
-			 	  '<td> <select id = "resident" name="resident">' + getUsers("Resident") + '</select></td>'+
-			 	  '<td> <select id = "crna" name="crna">' + getUsers("CRNA") + '</select></td>'+
-			 	  '<td><i class="fa fa-plus" style="color:red" onclick="addAssignment()"></i></td>'
-	newR.innerHTML = options;   
-	table.innerHTML = table.innerHTML + addRow
 }
 
+sortSchedule = function(schedule_date){
+	rooms = Object.keys(schedule_date)
+	rooms.sort(function(a,b) {
+		if(a == " ") return 1;
+		if(b == " ") return -1;
+		return locations_db[a].name > locations_db[b].name ? 1 : (locations_db[b].name > locations_db[a].name ? -1 : 0);} );
+	return rooms;
+}

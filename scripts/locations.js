@@ -7,13 +7,13 @@ displayLocations = function(){
   var ul ='<tr class="item" id = "new" contentEditable = true>'+
           '<td  contentEditable = false><i class="fa fa-plus" style="color:red" onclick="addLocation()"></i></td>'+
           '<td> </td><td> </td><td> </td></tr>'
-  for(var locationId in locations_db){
-    var location = locations_db[locationId]
+  locations_values.forEach(function(location){
+
     ul += '<tr class="item"><td> </td><td>' + location.name + '</td>' +
           '<td><a href="tel:' + location.cellphone + '">' + location.cellphone + '</a></td>'+
           '<td>' + location.needsAssignment + '</td>' +
           '</tr>'
-  }
+  })
   list.innerHTML = ul;
 };
 

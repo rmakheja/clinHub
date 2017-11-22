@@ -1,6 +1,7 @@
 var users_db = {};
 var user_values = [];
 var locations_db = {};
+var locations_values = [];
 var apps_db = {};
 var schedules_db = {}; 
 var messages_db = {};
@@ -82,10 +83,12 @@ loadLocations = function(){
 			    var locations = snapshot.val();
 			      	for (var locationId in locations) {
 			        	if(locations.hasOwnProperty(locationId)) {
-			           		locations_db[locationId] = new Location(locationId, locations[locationId])
+			           		 locations_values.push(new Location(locationId, locations[locationId]))
 			          	}
 			      	}
-			    res();
+			    
+          res();
+          sortLocations();
 		    },
 		    function (error) {
 		    	console.log("Error: " + error.code);
@@ -228,8 +231,9 @@ loadUsers = function(){
             user_values.push(user);
     		  }
     		}
-    		sortUsers();
+    		
         res();
+        sortUsers();
     	},
     	function (error) {
     		console.log("Error: " + error.code);
@@ -251,5 +255,11 @@ unLoadDb = function(){
 
 sortUsers = function(){
   user_values.sort(function(a,b) {return getUserName(a) > getUserName(b) ? 1 : ((getUserName(b) > getUserName(a)) ? -1 : 0);} );
-  user_values.foreach(function(user){users_db[user.key] = user})
+  user_values.forEach(function(user){users_db[user.key] = user})
+}
+
+sortLocations = function(){
+  locations_values.sort(function(a,b) {return a.name > b.name ? 1 : (b.name > a.name ? -1 : 0);} );
+  locations_values.forEach(function(room){locations_db[room.key] = room})
+
 }
