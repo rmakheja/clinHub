@@ -1,5 +1,3 @@
-
-
 onAuthStateChanged = function(user) {
   var home = document.getElementById('home');
   var login = document.getElementById("login");
@@ -8,7 +6,6 @@ onAuthStateChanged = function(user) {
   var signOut = document.getElementById('sign-out');
   document.getElementById('msg_mi').className = "active"
   if (user) {
-    
     login.hidden = true;
     signOut.hidden = false;
     var profilePicUrl = user.photoURL; 
@@ -16,30 +13,25 @@ onAuthStateChanged = function(user) {
     // userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
     userPic.src = profilePicUrl;
     userPic1.src = profilePicUrl;
-    messageList = [];
-    userList = [];
     var id = sessionStorage.getItem('chat_id'); 
     if(id != null) {
-        loadUsers().then(function(){
-
-          displayUserList();
-          loadMessages().then(function(){chat(id)}).catch(function(error){
-            console.log("some error - " + error);
-            });
-        }).catch(function(error){
-            console.log("some error - " + error);
-            });
-
-    }
-    else {
       loadUsers().then(function(){
-      if(this.newUser){
-        this.addUser();
-      }
-      updateUrl(profilePicUrl);
-      this.saveMessagingDeviceToken();
-      displayUserList();
-      loadMessages().then(function(){
+        displayUserList();
+        loadMessages().then(function(){chat(id)}).catch(function(error){
+          console.log("some error - " + error);
+        });
+      }).catch(function(error){
+        console.log("some error - " + error);
+      });
+    } else {
+      loadUsers().then(function(){
+        if(this.newUser){
+          this.addCurrentUser();
+        }
+        updateUrl(profilePicUrl);
+        this.saveMessagingDeviceToken();
+        displayUserList();
+        loadMessages().then(function(){
         displayMessages()
         }).catch(function(error){
             console.log("some error - " + error);
@@ -52,9 +44,7 @@ onAuthStateChanged = function(user) {
     // We save the Firebase Messaging Device token and enable notifications.
     
   } else {
-    messageList = [];
-    userList = [];
-    appList = [];
+    unLoadDb()
     currentUser = '';
     login.hidden = false;
     home.hidden = true;

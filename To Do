@@ -1,15 +1,8 @@
-new chat
 image, etc sending
-multi page
 encrypted storing
 onReload chat should open
 state
 timestamp
-send on enter
-back to history on back button
 user info on pic click
 realtime(call loadMessages->chat)
-display recent messge in history
-toggle send button to be disabled when no message typed
-search user nd search messages
 

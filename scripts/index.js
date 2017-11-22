@@ -1,16 +1,9 @@
 var currentUser = '';
 var currUserkey = -1;
-var userList = [];
-// var physicianList = [];
-var locationList = [];
-var appList = [];
 var userRef = '';
 var messageRef = '';
-var messageList = [];
 var currid = '';
 var chat_id = '';
-var foldersList = [];
-var filesList = [];
 
 window.onload = function() {
   checkSetup();
@@ -66,12 +59,14 @@ function myFunction() {
 
 document.getElementById("header").innerHTML = '<h3><i class="fa fa-user-md" style="color:white"></i>  ClinHub</h3>'+
                                                 '<div class="topnav" id="myTopnav">'+
-                                                '<a href="index.html" id="msg_mi">Messages</a>'+
+                                                '<a href="/" id="msg_mi">Messages</a>'+
                                                 '<a href="users.html" id="usr_mi">Users</a>'+
                                                 '<a href="locations.html" id="loc_mi">Locations</a>'+
                                                 '<a href="issues.html" id="iss_mi">Issues</a>'+
                                                 '<a href="storage.html" id="rsr_mi">Resources</a>'+
                                                 '<a href="apps.html" id="app_mi">Apps</a>'+
+                                                '<a href="schedule.html" id="sch_mi">Schedules</a>'+
+                                                '<a href="surveys.html" id="sur_mi">Surveys</a>'+
                                                 '<a href="#" id="sign-out" onclick="signOut()">Sign Out</a>'+
                                                 '<a href="#MyProfile;" style="font-size:15px;" id="iconLarge" class="icon" onclick="myFunction()"> <img src="" id="user-pic"></a>'+
                                                 '<a href="javascript:void(0);" style="font-size:15px;" id="iconSmall" class="icon" onclick="myFunction()"> <img src="" id="user-pic1"></a><!-- &#9776;</a> -->'+

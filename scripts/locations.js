@@ -1,45 +1,19 @@
-LocationClass =class{
-  constructor(key, object){
-    this.key = object[key]
-    this.name = object["name"]
-    this.cellphone = object["cellPhone"]
-  }
-}
-loadLocations = function(){
-  locationsRef = firebase.database().ref('locations/');
-    return new Promise(function(res, rej){
-        locationsRef.on("value", function(snapshot) {
-        var locations = snapshot.val();
-          for (var locationId in locations)
-          {
-             if(locations.hasOwnProperty(locationId)){
-               var location = new LocationClass(locationId, locations[locationId]); 
-               locationList.push(location);
-              }
-          }
-        res();
-        }, function (error) {
-          console.log("Error: " + error.code);
-          rej(error);
-      });
-    });
-    
-};
 
 displayLocations = function(){
   var list = document.getElementById('location_list');
   if(list == null)
       return;
   list.innerHTML = '';
-  var ul = '';
-  locationList.forEach(function(location){
-      // ul += '<li class="media">'+
-      //         '<div class="media-body">'+
-      //             '<h5>'+ location.name+' : '+ location.cellphone+'</h5>'+
-      //         '</div>'+
-      //     '</li>'
-      ul += '<tr class="item"><td>' + location.name + '</td><td>' + location.cellphone + '</td></tr>'
-  });
+  var ul ='<tr class="item" id = "new" contentEditable = true>'+
+          '<td  contentEditable = false><i class="fa fa-plus" style="color:red" onclick="addLocation()"></i></td>'+
+          '<td> </td><td> </td><td> </td></tr>'
+  for(var locationId in locations_db){
+    var location = locations_db[locationId]
+    ul += '<tr class="item"><td> </td><td>' + location.name + '</td>' +
+          '<td><a href="tel:' + location.cellphone + '">' + location.cellphone + '</a></td>'+
+          '<td>' + location.needsAssignment + '</td>' +
+          '</tr>'
+  }
   list.innerHTML = ul;
 };
 
@@ -58,7 +32,6 @@ onAuthStateChanged = function(user) {
     // userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
     userPic.src = profilePicUrl;
     userPic1.src = profilePicUrl;
-    locationList = [];
     loadLocations().then(function(){
       displayLocations();
       }).catch(function(error){
@@ -67,12 +40,7 @@ onAuthStateChanged = function(user) {
     home.hidden = false;
     
   } else {
-    
-    messageList = [];
-    userList = [];
-    physicianList = [];
-    locationList = [];
-    appList = [];
+    unLoadDb()
     currentUser = '';
     login.hidden = false;
     home.hidden = true;
@@ -81,3 +49,30 @@ onAuthStateChanged = function(user) {
     userPic1.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg;"
   }
 };
+
+
+addLocation = function(){
+  newRow = document.getElementById("new")
+  cols = newRow.getElementsByTagName("td")
+  userRef = firebase.database().ref('locations/')
+  assign = cols[3].innerText
+  if( assign == " ")
+    assign = "no"
+  userRef.push({
+    "name" :  cols[1].innerText,
+    "cellPhone" : cols[2].innerText,
+    "needsAssignment" : assign
+  })
+  table = newRow.parentElement
+  
+  newR ='<tr class="item" id = "new" contentEditable = true>'+
+          '<td contentEditable = false><i class="fa fa-plus" style="color:red" onclick="addLocation()"></i></td>'+
+          '<td> </td><td> </td><td> </td></tr>'+
+          '<tr class="item"><td> </td><td>'+cols[1].innerText+'</td>' +
+          '<td>'+ cols[2].innerText+'</td>'+
+          '<td>'+ assign +'</td>'+
+          '</tr>';
+  table.removeChild(newRow)
+  table.innerHTML = newR + table.innerHTML
+}
+

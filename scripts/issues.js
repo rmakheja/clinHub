@@ -18,11 +18,7 @@ onAuthStateChanged = function(user) {
     
   } else {
     
-    messageList = [];
-    userList = [];
-    physicianList = [];
-    locationList = [];
-    appList = [];
+    unLoadDb()
     currentUser = '';
     login.hidden = false;
     home.hidden = true;

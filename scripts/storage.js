@@ -14,25 +14,6 @@ prevFolderPath = "/"
 upFolderPath = "/"
 
 
-folderClass = class{
-  constructor(key,object){
-    this.key = key
-    this.name = object["name"]
-    this.path = object["path"]
-    this.parent = object["parent"]   
-}
-}
-
-fileClass = class{
-  constructor(key,object){
-    this.key = key
-    this.name = object["name"]
-    this.path = object["path"]
-    this.parent = object["parent"]   
-    this.type = object["type"]
-}
-}
-
 onAuthStateChanged = function(user) {
   var home = document.getElementById('home');
   var login = document.getElementById("login");
@@ -62,14 +43,7 @@ onAuthStateChanged = function(user) {
     home.hidden = false;
     
   } else {
-    
-    messageList = [];
-    userList = [];
-    physicianList = [];
-    locationList = [];
-    foldersList = [];
-    appList = [];
-    filesList = [];
+    unLoadDb()
     currentUser = '';
     login.hidden = false;
     home.hidden = true;
@@ -79,51 +53,6 @@ onAuthStateChanged = function(user) {
   }
 };
 
-loadFolders = function(){
-  foldersRef = firebase.database().ref('/folders/');
-  return new Promise(function(res, rej){
-        foldersRef.on("value", function(snapshot) {
-          foldersList = []
-        var folders = snapshot.val();
-          for (var folderId in folders)
-          {
-             if(folders.hasOwnProperty(folderId)){
-                var folder = new folderClass(folderId,folders[folderId]);
-                foldersList.push(folder);
-              }
-          }
-        res();
-        }, function (error) {
-          console.log("Error: " + error.code);
-          rej(error);
-      });
-      
-    });
-
-}
-
-loadFiles = function(){
-  filesRef = firebase.database().ref('/files/');
-  return new Promise(function(res, rej){
-        filesRef.on("value", function(snapshot) {
-          filesList = []
-        var files = snapshot.val();
-          for (var fileId in files)
-          {
-             if(files.hasOwnProperty(fileId)){
-                var file = new fileClass(fileId,files[fileId]);
-                filesList.push(file);
-              }
-          }
-        res();
-        }, function (error) {
-          console.log("Error: " + error.code);
-          rej(error);
-      });
-      
-    });
-}
-
 
 displayResources = function(parentPath){
   prevFolderPath = currFolderPath
@@ -132,22 +61,24 @@ displayResources = function(parentPath){
   var content = '';
   var folders = []
   var files = []
-  foldersList.forEach(function(folder){
+  for (var folderId in folders_db){
+    var folder = folders_db[folderId]
     if(folder.parent == parentPath){
       folders.push(folder)
     }
-    
     if (parentPath == "/")
       currFolder = "/"
     else if(folder.path == parentPath){
       currFolder = folder.name
       upFolderPath = folder.parent
     }
-  })
-  filesList.forEach(function(file){
+  }
+  for(var fileId in files_db) {
+    var file = files_db[fileId]
     if(file.parent == parentPath)
       files.push(file)
-  })
+  }
+
   var foldLen = folders.length
   var filLen = files.length
   var noOfrows = (foldLen + filLen)/4
@@ -176,7 +107,7 @@ displayResources = function(parentPath){
             else
               typ = "file"
           }
-          content += '<input type="checkbox" name="forDeletion" value="'+file.parent+file.name+'" class="checkbox">' +
+          content += '<input type="checkbox" name="forDeletion" value="'+ file.path +'" class="checkbox">' +
           '<a target ="_blank" href="'+file.path+'"><i style="font-size:300%" class="fa fa-file-'+typ+'-o"></i></a>'
           names.push(file.name)
           files.pop()
@@ -191,64 +122,80 @@ displayResources = function(parentPath){
   resourceContent.innerHTML = content;
   document.getElementById("path").innerHTML = "ClinHub" + currFolderPath
 }
-function handleFileSelect(evt) {
-      var storageRef = firebase.storage().ref();
-      evt.stopPropagation();
-      evt.preventDefault();
-      var file = evt.target.files[0];
-      // var type = file.type.substring(file.type.indexOf("/") + 1)
-      var metadata = {
-        'contentType': file.type
-      };
-
-      // Push to child path.
-      // [START oncomplete]
-      
-      p = currFolderPath+'/' + file.name
-      storageRef.child(p).put(file, metadata).then(function(snapshot) {
-        filesRef = firebase.database().ref('/files/');
-        var url = snapshot.downloadURL;
-        filesRef.push({
-          "name": file.name,
-          "path" : url,
-          "parent": currFolderPath,
-          "type": file.type
-        })
-      
-      displayResources(currFolderPath);
-      }).catch(function(error) {
-        // [START onfailure]
-        console.error('Upload failed:', error);
-        // [END onfailure]
-      });
-      // [END oncomplete]
-    }
-createFolder = function(){
-    
-    var folderName = prompt("Please enter folder name:", "New Folder");
-    if (folderName == null || folderName == "") {
-        alert("Invalid value")
-    } else {
-        uploadFolder(folderName)
-    }
+displayFile = function(path){
+  
+  var resourceContent = document.getElementById("resourcesContent");
+  var file = files_db[path]
+  prevFolderPath = currFolderPath
+  currFolderPath = file.parent
+  upFolderPath = file.parent
+  var typ = typeDict[file.type]
+  var content = '<tr><td>'
+  if(typ == undefined){
+    if(file.type.indexOf("video") != -1)
+      typ = "video"
+    else if (file.type.indexOf("audio") != -1)
+      typ ="audio"
+    else
+      typ = "file"
+  }
+  content += '<input type="checkbox" name="forDeletion" value="'+ path +'" class="checkbox">' +
+             '<a target ="_blank" href="'+ path +'"><i style="font-size:300%" class="fa fa-file-'+typ+'-o"></i></a>' +
+            '</td></tr><tr>' +
+            '<td class="name">'+ file.name +'</td></tr>'
+  resourceContent.innerHTML = content;
+  document.getElementById("path").innerHTML = "ClinHub" + currFolderPath  
 }
 
+function handleFileSelect(evt) {
+  var storageRef = firebase.storage().ref();
+  evt.stopPropagation();
+  evt.preventDefault();
+  var file = evt.target.files[0];
+  // var type = file.type.substring(file.type.indexOf("/") + 1)
+  var metadata = {'contentType': file.type};
+  p = currFolderPath+'/' + file.name
+  storageRef.child(p).put(file, metadata).then(function(snapshot) {
+    filesRef = firebase.database().ref('/files/');
+    var url = snapshot.downloadURL;
+    filesRef.push({
+      "name": file.name,
+      "path" : p,
+      "parent": currFolderPath,
+      "type": file.type
+    })    
+    
+    displayResources(currFolderPath);
+  }).catch(function(error) {
+    // [START onfailure]
+    console.error('Upload failed:', error);
+    // [END onfailure]
+      });
+      // [END oncomplete]
+  }
 
-function uploadFolder(name) {
-      var storageRef = firebase.storage().ref();
-      // storageRef.child(currFolderPath+'/' + name+'/foo.txt').put().then(function(snapshot) {
-        foldersRef = firebase.database().ref('/folders/');
-        p = currFolderPath + name + "/"
-        foldersRef.push({
-          "name": name,
-          "path" : p,   
-          "parent": currFolderPath// /new folder/
-        })
-      displayResources(currFolderPath);
-      // }).catch(function(error) {
-      //   console.error('Upload failed:', error);
-      // });
-    }
+createFolder = function(){
+  var folderName = prompt("Please enter folder name:", "New Folder");
+  if (folderName == null || folderName == "") {
+    alert("Invalid value")
+  } else {
+    uploadFolder(folderName)
+  }
+}
+
+uploadFolder = function(name) {
+  var storageRef = firebase.storage().ref();
+  // storageRef.child(currFolderPath+'/' + name+'/foo.txt').put().then(function(snapshot) {
+  foldersRef = firebase.database().ref('/folders/');
+  p = currFolderPath + name + "/"
+  foldersRef.push({
+    "name": name,
+    "path" : p,   
+    "parent": currFolderPath// /new folder/
+  })
+  displayResources(currFolderPath);
+}
+
 displayFromPath = function(path) {
   found = true;
   if (path == "" || path == null)
@@ -258,16 +205,21 @@ displayFromPath = function(path) {
       displayResources("/")
       return;
     }
-    else if (path.lastIndexOf("/") != path.length - 1)
-        path = path + "/"
     if(path.indexOf("/") != 0)
-        path = "/" + path
-    foldersList.forEach(function(folder){
-      if (folder.path == path){
+      path = "/" + path
+    
+    if(path in files_db) {
+      displayFile(path)
+      found = false;
+    } else{
+      if (path.lastIndexOf("/") != path.length - 1)
+      path = path + "/"
+      if(path in folders_db){
         displayResources(path)
         found = false;
       }
-    })
+    }
+
     if (found)
       document.getElementById("resourcesContent").innerHTML = ""
   }
@@ -279,8 +231,7 @@ up = function(){
   displayResources(upFolderPath)
 }
 deleteFile = function(){
-  if(confirm("Are you sure you want to proceed for deletion"))
-  {
+  if(confirm("Are you sure you want to proceed for deletion")) {
     var checkboxes = document.getElementsByName("forDeletion");
     var checkboxesChecked = [];
     var deletedFolders = []
@@ -289,46 +240,45 @@ deleteFile = function(){
   // loop over them all
     for (var i=0; i<checkboxes.length; i++) {
      // And stick the checked ones onto an array...
-     if (checkboxes[i].checked) {
-      var path = checkboxes[i].value;
-      var fileRef = storageRef.child(path);
-      if(path.lastIndexOf("/") == path.length - 1)
-        deletedFolders.push(path)
-      else
-        deletedFiles.push(path)
-      fileRef.delete().then(function() {
-        }).catch(function(error) {
-          console.log(error)
-        });
-     }
-
-  }
-    foldersList.forEach(function(folder){
-      deletedFolders.forEach(function(f){
-        if (folder.path.startsWith(f)){
-          fRef = firebase.database().ref("folders/"+folder.key)  
-          fRef.remove();
-        }
-      })
-    })
-
-    filesList.forEach(function(file){
-      fp = file.parent + file.name 
+      if (checkboxes[i].checked) {
+        var path = checkboxes[i].value;
+        var fileRef = storageRef.child(path);
+        console.log()
+        if(path.lastIndexOf("/") == path.length - 1)
+          deletedFolders.push(path)
+        else
+          deletedFiles.push(path)
+        fileRef.delete().then(function() {
+          }).catch(function(error) {
+            console.log(error)
+          });
+      }
+    }
+    for(var fp in folders_db) {
       deletedFolders.forEach(function(f){
         if (fp.startsWith(f)){
-          console.log(f)
-          fRef = firebase.database().ref("files/"+file.key)  
+          fRef = firebase.database().ref("folders/"+ folders_db[fp].key)  
           fRef.remove();
+          delete folders_db[fp]
+        }
+      })
+    }
+    for(var fp in files_db){
+      deletedFolders.forEach(function(f){
+        if (fp.startsWith(f)){
+          fRef = firebase.database().ref("files/"+files_db[fp].key)  
+          fRef.remove();
+          delete files_db[fp]
         }
       })
       deletedFiles.forEach(function(f){
         if (fp == f){
-          console.log(f)
-          fRef = firebase.database().ref("files/"+file.key)  
+          fRef = firebase.database().ref("files/"+ files_db[fp].key)  
           fRef.remove();
+          delete files_db[fp]
         }
       })
-    })
+    }
     displayResources(currFolderPath)
   }
 }

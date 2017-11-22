@@ -25,7 +25,7 @@ body {
   margin: 0px;
   border: 0px;
   padding: 0px;
-  background-blend-mode: overlay;
+  /* background-blend-mode: overlay; */
 }
 html {
   margin: 0px;
