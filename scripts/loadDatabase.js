@@ -254,7 +254,7 @@ unLoadDb = function(){
 }
 
 sortUsers = function(){
-  user_values.sort(function(a,b) {return getUserName(a) > getUserName(b) ? 1 : ((getUserName(b) > getUserName(a)) ? -1 : 0);} );
+  user_values.sort(function(a,b) {return getFullName(a) > getFullName(b) ? 1 : ((getFullName(b) > getFullName(a)) ? -1 : 0);} );
   user_values.forEach(function(user){users_db[user.key] = user})
 }
 

@@ -1,7 +1,7 @@
 now = new Date();
 nowYear = now.getFullYear().toString()
 nowMonth = now.getMonth()+1
-
+limit = 3
 onAuthStateChanged = function(user) {
   var home = document.getElementById('home');
   var login = document.getElementById("login");
@@ -21,19 +21,20 @@ onAuthStateChanged = function(user) {
       loadSurveys().then(function(){
         loadSurveyTypes().then(function(){
           displaySurveys()
+          if(currentUser.isAdmin == "yes"){
+            document.getElementById("generate").hidden = false;
+            document.getElementById("remind").hidden = false;
+            document.getElementById("facultySurvey").hidden = false;
+            document.getElementById("facultyURL").hidden = false;
+            document.getElementById("crnaURL").hidden = false;
+            document.getElementById("residentURL").hidden = false;
+          }
         })
       })
     }).catch(function(error){
         console.log("some error - " + error);
     })
-    if(currentUser.email == "rashmakheja@gmail.com" ){
-      document.getElementById("generate").hidden = false;
-      document.getElementById("facultySurvey").hidden = false;
-      document.getElementById("facultyURL").hidden = false;
-      document.getElementById("crnaURL").hidden = false;
-      document.getElementById("residentURL").hidden = false;
-      
-    }
+    
     home.hidden = false;
     
   } else {
@@ -176,7 +177,7 @@ displaySurveys = function(){
   var list = document.getElementById("survey_list")
   list.innerHTML = '';
   var ul = ''
-
+  count = 0
   for(var year in surveys_db){
     if(currentUser.key in surveys_db[year]){
       surveyList = surveys_db[year][currentUser.key]
@@ -184,12 +185,13 @@ displaySurveys = function(){
       for (var forUser in surveyList){
         userSurvey = surveyList[forUser]
 
-        if (userSurvey.status == "sent"){
+        if (userSurvey.status == "sent" && count <= limit){
           name = getUserName(users_db[forUser])
           var path = year + '/' + currentUser.key + '/' + forUser
           //link+'for=' + object["for"] + '&date=' + object["date"]
-          link = surveyTypes_db[userSurvey.type] + "for=" + name
+          link = surveyTypes_db[userSurvey.type]
           ul += '<tr id ="'+ path +'"><td>' + userSurvey.date + ' </td><td> ' + name + '</td><td><a href="' + link + '" target="_blank">' + link + '</a></td><td><i class="fa fa-check-circle" style="color:red" onclick="markFilled(\''+ path +'\')"></i></td></tr>';
+          count += 1;
         }
       }
     }
@@ -208,6 +210,7 @@ generate = function(){
   })
   alert("Surveys successfully created");
   displaySurveys()
+  remind()
 }
 
 markFilled = function(path){
@@ -285,4 +288,29 @@ updateURL = function(type){
   }
   surveyLinkRef = firebase.database().ref('/surveyLinks/'+type +'/');
   surveyLinkRef.set(url);
+}
+
+
+
+
+remind = function(){
+  for(var year in surveys_db){
+    year_surveys = surveys_db[year]
+    for(var by_user in year_surveys){
+      user_surveys = year_surveys[by_user]
+      send_email = false;
+      for(var for_user in user_surveys){
+        if(user_surveys[for_user]["status"] == "sent"){
+          send_email = true
+          break;
+        }
+      }
+
+      if(send_email){
+        userSurveyRef = firebase.database().ref('/surveys/' + year + '/' + by_user + '/send_email/');
+        userSurveyRef.set("yes")
+      }
+    }
+  }
+
 }

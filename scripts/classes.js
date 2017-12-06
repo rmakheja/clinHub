@@ -57,6 +57,7 @@ Physician = class{
 	    this.cellphone = object["cellPhone"]
 	    this.secondaryphone = ''
 	    this.picUrl = object["picurl"]
+	    this.isAdmin = object["isAdmin"]
 	}
 }
 

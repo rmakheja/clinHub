@@ -20,7 +20,19 @@ onAuthStateChanged = function(user) {
     userPic1.src = profilePicUrl;
     loadSchedules().then(function(){
       loadLocations();
-      loadUsers().then(function(){initOptions()})
+      loadUsers().then(function(){
+      	initOptions()
+		curr = new Date();
+        year = curr.getFullYear()
+        month = curr.getMonth()
+        date = curr.getDate()
+        currentDate = ''
+        if(date < 10)
+        	document.getElementById("date").value = year + "-" + month + "-0" + date
+        else
+        	document.getElementById("date").value = year + "-" + month + "-" + date
+		displaySchedule()
+      })
     }).catch(function(error){
             console.log("some error - " + error);
       });
@@ -40,12 +52,12 @@ onAuthStateChanged = function(user) {
 displaySchedule = function(){
     
     currentDate = document.getElementById("date").value.toString()
-
+	
     var list = document.getElementById("schedule_list")
 	list.innerHTML = '';
  	var ul = ''
 	if(currentDate == ""){
-		currentDate = prompt("Please enter date in format(mm-dd-yyyy):", " ");
+		currentDate = prompt("Please enter date in format(yyyy-mm-dd):", " ");
 	}
 	parsedDate = Date.parse(currentDate)
 	if(isNaN(parsedDate)){
@@ -65,13 +77,13 @@ displaySchedule = function(){
     		room_name  = locations_db[room].name
     	scheduleObject = schedule_date[room]
 
-	    ul += '<tr>'+
+	    ul += '<tr id = "' + scheduleObject.room + '">'+
 	          '<td>'+ room_name +'</td>' +
-	          '<td>'+  getUserName(users_db[scheduleObject.attending]) +'</td>' +
-	          '<td>' + getUserName(users_db[scheduleObject.resident]) +'</td>'+
-	          '<td>' + getUserName(users_db[scheduleObject.crna]) +'</td>'+
-	          '<td>' + getUserName(users_db[scheduleObject.surgeon]) +'</td>'+
-	          '<td> </td></tr>';
+	          '<td>'+  getFullName(users_db[scheduleObject.attending]) +'</td>' +
+	          '<td>' + getFullName(users_db[scheduleObject.resident]) +'</td>'+
+	          '<td>' + getFullName(users_db[scheduleObject.crna]) +'</td>'+
+	          '<td>' + getFullName(users_db[scheduleObject.surgeon]) +'</td>'+
+	          '<td><i class="fa fa-close" style="color:red" onclick="deleteAssignment(\''+ scheduleObject.room +'\')"></i></td></tr>';
 	};
    list.innerHTML = optionsDropdown + ul;
 }
@@ -95,7 +107,7 @@ getRooms = function(){
 	return options;
 }
 getUserOption = function(user){
-	return '<option value="' + user.key + '">' + getUserName(user) + '</option>'
+	return '<option value="' + user.key + '">' + getFullName(user) + '</option>'
 }
 getBlankOption = function(){
 	return '<option value=" ">  </option>'
@@ -134,18 +146,21 @@ addAssignment = function(){
 		"crna" : crna,
 		"surgeon" : surgeon
 	})
-	var addRow = '<tr>'+
+	var addRow = '<tr id = "' + room + '">'+
 	          	 '<td>'+ room_name +'</td>' +
 	        	 '<td>'+ attending_name +'</td>' +
 	        	 '<td>' + resident_name +'</td>'+
 	        	 '<td>' + crna_name +'</td>'+
 	        	 '<td>' + surgeon_name +'</td>'+
-	        	 '<td> </td></tr>';
+	        	 '<td><i class="fa fa-close" style="color:red" onclick="deleteAssignment(\''+ room +'\')"></i></td></tr>';
+	        	 
 	table.removeChild(newR)
 	table.innerHTML =  optionsDropdown + addRow + table.innerHTML;
 }
 initOptions = function(){
-	optionsDropdown = '<tr id = "new"><td> <select id = "room" name="room">' + getRooms() + '</select></td>' +
+	optionsDropdown = ''
+	if(currentUser.isAdmin == "yes")
+		optionsDropdown = '<tr id = "new"><td> <select id = "room" name="room">' + getRooms() + '</select></td>' +
 				 	  '<td> <select id = "attending" name="attending">' + getUsers("Faculty") + '</select></td>'+
 				 	  '<td> <select id = "resident" name="resident">' + getUsers("Resident") + '</select></td>'+
 				 	  '<td> <select id = "crna" name="crna">' + getUsers("CRNA") + '</select></td>'+
@@ -162,3 +177,15 @@ sortSchedule = function(schedule_date){
 		return locations_db[a].name > locations_db[b].name ? 1 : (locations_db[b].name > locations_db[a].name ? -1 : 0);} );
 	return rooms;
 }
+
+deleteAssignment = function(room){
+  if(confirm("Are you sure you want to proceed for deletion")){
+  	year = new Date(currentDate).getFullYear()
+    scheduleRef = firebase.database().ref('schedule/'+ year + '/' + currentDate + '/' + room + '/')
+    scheduleRef.remove();
+    row = document.getElementById(room);
+    table = row.parentElement;
+    table.removeChild(row);
+  }
+}
+ 

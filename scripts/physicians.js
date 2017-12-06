@@ -21,13 +21,11 @@ onAuthStateChanged = function(user) {
     userPic1.src = profilePicUrl;
     
     loadUsers().then(function(){
-      
       displayUsers();
     }).catch(function(error){
             console.log("some error - " + error);
       });
     home.hidden = false;
-    
   } else {
     unLoadDb()
     currentUser = '';
@@ -50,16 +48,23 @@ displayUsers = function(){
   var list = document.getElementById('physician_list');
   list.innerHTML = '';
   var ul = '';
-  ul+='<tr class="item" id = "new" contentEditable = true>'+
+  if(currentUser.isAdmin == "yes")
+    ul+='<tr class="item" id = "new" contentEditable = true>'+
         '<td  contentEditable = false><i class="fa fa-plus" style="color:red" onclick="addUser()"></i></td>'+
-        '<td> </td><td> </td><td> </td><td> </td><td>  </td><td  contentEditable = false></td></tr>'
+        '<td> </td><td> </td><td> </td><td> </td><td> </td><td>  </td><td  contentEditable = false></td></tr>'
   user_values.forEach(function(user){
-    ul += '<tr class="item" id = "'+user.key+'"><td  contentEditable = false><i class="fa fa-edit" style="color:red" onclick="edit('+ user.key+')"></i></td><td onclick="contact('+ user.key +')">'+user.firstname+'</td>' +
+    temp_row = '<td onclick="contact('+ user.key +')">'+user.firstname+'</td>' +
           '<td>'+user.lastname+'</td>' +
           '<td>'+ user.department+'</td>' +
+          '<td>'+ user.email +'</td>' +
           '<td><a href="tel:'+ user.cellphone +'">' + user.cellphone +'</a></td>'+
-          '<td>'+ user.role+'</td>' +
-          '<td  contentEditable = false><i class="fa fa-close" style="color:red" onclick="deleteUser('+ user.key+')"></i></td></tr>';
+          '<td>'+ user.role+'</td>'
+        if(currentUser.isAdmin == "yes")
+          ul += '<tr class="item" id = "'+user.key+'"><td  contentEditable = false><i class="fa fa-edit" style="color:red" onclick="edit('+ user.key+')"></i></td>'+
+                temp_row + 
+                '<td  contentEditable = false><i class="fa fa-close" style="color:red" onclick="deleteUser('+ user.key+')"></i></td></tr>';
+        else 
+          ul += '<tr class="item"><td> </td>' + temp_row + '<td> </td></tr>';
   })
   list.innerHTML = ul;
   };
@@ -84,8 +89,9 @@ save = function(id){
     "firstname" : cols[1].innerText,
     "lastname" :  cols[2].innerText,
     "department" : cols[3].innerText,
-    "cellPhone" : cols[4].innerText,
-    "role" : cols[5].innerText,
+    "email" : cols[4].innerText,
+    "cellPhone" : cols[5].innerText,
+    "role" : cols[6].innerText,
   })
 
   col = cols[0]
@@ -112,11 +118,11 @@ addUser = function(){
     "firstname" : cols[1].innerText,
     "lastname" :  cols[2].innerText,
     "department" : cols[3].innerText,
-    "cellPhone" : cols[4].innerText,
-    "role" : cols[5].innerText,
+    "cellPhone" : cols[5].innerText,
+    "role" : cols[6].innerText,
     "degree" : " ",
     "division" : " ",
-    "email" : " ",
+    "email" : cols[4].innerText,
     "secondaryphone" : " ",
     "picurl" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"
   })
@@ -124,12 +130,13 @@ addUser = function(){
   
   newR ='<tr class="item" id = "new" contentEditable = true>'+
           '<td contentEditable = false><i class="fa fa-plus" style="color:red" onclick="addUser()"></i></td>'+
-          '<td> </td><td> </td><td> </td><td> </td><td>  </td><td></td></tr>'+
+          '<td> </td><td> </td><td> </td><td> </td><td>  </td><td> </td><td> </td></tr>'+
           '<tr class="item" id = "'+id+'"><td><i class="fa fa-edit" style="color:red" onclick="edit('+ id +')"></i></td><td onclick="contact('+ id +')">'+cols[1].innerText+'</td>' +
               '<td>'+cols[2].innerText+'</td>' +
               '<td>'+ cols[3].innerText+'</td>' +
-              '<td><a href="tel:'+ cols[4].innerText + '">' + cols[4].innerText +'</a></td>'+
-              '<td>'+ cols[5].innerText+'</td>' +
+              '<td>'+ cols[4].innerText+'</td>' +
+              '<td><a href="tel:'+ cols[5].innerText + '">' + cols[5].innerText +'</a></td>'+
+              '<td>'+ cols[6].innerText+'</td>' +
               '<td  contentEditable = false><i class="fa fa-close" style="color:red" onclick="deleteUser('+ id+')"></i></td></tr>';
   table.removeChild(newRow)
   table.innerHTML = newR + table.innerHTML

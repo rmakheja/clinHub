@@ -64,7 +64,7 @@ displayUserList = function(){
                '<img class="media-object img-circle" style="max-height:40px;" src="'+user.picUrl+'" />'+
               '</a>'+
                '<div class="media-body">'+
-                  '<h6 style="margin: 10px 0px;">'+ getUserName(user) +'</h6>'+
+                  '<h6 style="margin: 10px 0px;">'+ getFullName(user) +'</h6>'+
               // '<small class="text-muted">Active From 3 hours</small>'+
             '</div>'+
           '</div>'+
@@ -82,6 +82,13 @@ getId = function(){
 getUserName = function(user){
   if(user != null)
     return user.firstname + ' ' + user.lastname;
+  else
+    return " "
+}
+
+getFullName = function(user){
+  if(user != null)
+    return user.lastname + ' ' + user.firstname;
   else
     return " "
 }

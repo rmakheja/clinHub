@@ -62,7 +62,7 @@ document.getElementById("header").innerHTML = '<h3><i class="fa fa-user-md" styl
                                                 '<a href="/" id="msg_mi">Messages</a>'+
                                                 '<a href="users.html" id="usr_mi">Users</a>'+
                                                 '<a href="locations.html" id="loc_mi">Locations</a>'+
-                                                '<a href="issues.html" id="iss_mi">Issues</a>'+
+                                                // '<a href="issues.html" id="iss_mi">Issues</a>'+
                                                 '<a href="storage.html" id="rsr_mi">Resources</a>'+
                                                 '<a href="apps.html" id="app_mi">Apps</a>'+
                                                 '<a href="schedule.html" id="sch_mi">Schedules</a>'+

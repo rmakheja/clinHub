@@ -39,7 +39,7 @@ displayMessages = function(){
             '<img class="media-object img-circle " style="max-height:50px;" src="'+ toUser.picUrl+'"></a>'+
             '</div>'+
             '<div class="media-body">'+
-            '<h6 class="media-heading" >'+ getUserName(toUser) +'</h6>'+
+            '<h6 class="media-heading" >'+ getFullName(toUser) +'</h6>'+
             '<p style="color:' + clr + ';">'+msgList[last].text +'</p>'+ 
             //'<br />'+
             //'<small class="text-muted">'+data.name +' </small>'+

@@ -160,7 +160,7 @@ function handleFileSelect(evt) {
     var url = snapshot.downloadURL;
     filesRef.push({
       "name": file.name,
-      "path" : p,
+      "path" : url,
       "parent": currFolderPath,
       "type": file.type
     })    

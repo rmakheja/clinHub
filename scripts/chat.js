@@ -6,7 +6,7 @@ chat = function(id){
   document.getElementById("historyParent").hidden = true;
   
   var toUser = users_db[id]; 
-  document.getElementById("name").innerHTML = getUserName(toUser) ;
+  document.getElementById("name").innerHTML = getFullName(toUser) ;
   document.getElementById("pic").src=toUser.picUrl;
   
   if(id in messages_db) {
