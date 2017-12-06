@@ -12,6 +12,7 @@ var surveys_db = {};
 var surveyTypes_db = {};
 
 loadSurveys = function(){
+  surveys_db = {}
   surveysRef = firebase.database().ref('/surveys/');
   return new Promise(function(res, rej){
     surveysRef.on("value", function(snapshot) {
@@ -52,6 +53,7 @@ surveysRef = firebase.database().ref('/monthlySurveys/');
 }
 
 loadApps = function(){
+  apps_db = {}
 	appsRef = firebase.database().ref('Apps/');
 	return new Promise(function(res, rej){
     appsRef.on(
@@ -75,6 +77,7 @@ loadApps = function(){
 };
 
 loadLocations = function(){
+  locations_values = []
 	locationsRef = firebase.database().ref('locations/');
 	return new Promise(function(res, rej){
 	    locationsRef.on(
@@ -100,6 +103,7 @@ loadLocations = function(){
 };
 
 loadMessages = function(){
+  messages_db = {}
 	messageRef = firebase.database().ref('messageThreads/');
   return new Promise(function(res, rej){
 		messageRef.on(
@@ -133,6 +137,7 @@ loadMessages = function(){
 };
 
 loadSchedules = function(){
+  schedules_db = {}
   scheduleRef = firebase.database().ref('schedule/');
   return new Promise(function(res, rej){
     scheduleRef.on(
@@ -165,6 +170,7 @@ loadSchedules = function(){
 };
 
 loadFolders = function(){
+  folders_db = {}
 	foldersRef = firebase.database().ref('/folders/');
 	return new Promise(function(res, rej){
     foldersRef.on(
@@ -188,6 +194,7 @@ loadFolders = function(){
 }
 
 loadFiles = function(){
+  files_db = {}
 	filesRef = firebase.database().ref('/files/');
 	return new Promise(function(res, rej){
     filesRef.on(
@@ -211,6 +218,7 @@ loadFiles = function(){
 }
 
 loadUsers = function(){
+  user_values = []
   userRef = firebase.database().ref('users/');
   return new Promise(function(res, rej){
     userRef.on(
@@ -261,5 +269,4 @@ sortUsers = function(){
 sortLocations = function(){
   locations_values.sort(function(a,b) {return a.name > b.name ? 1 : (b.name > a.name ? -1 : 0);} );
   locations_values.forEach(function(room){locations_db[room.key] = room})
-
 }
