@@ -4,11 +4,10 @@ var userRef = '';
 var messageRef = '';
 var currid = '';
 var chat_id = '';
-
+var maxId = 0;
 window.onload = function() {
   checkSetup();
   initFirebase();
-  // initHeader();
 };
 
 initFirebase = function() {
@@ -45,7 +44,7 @@ gsignIn = function() {
 };
 
 signOut = function() {
-   auth.signOut();
+  this.deleteMessagingToken()
 };
 
 function myFunction() {
@@ -71,6 +70,13 @@ document.getElementById("header").innerHTML = '<h3><i class="fa fa-user-md" styl
                                                 '<a href="#MyProfile;" style="font-size:15px;" id="iconLarge" class="icon" onclick="myFunction()"> <img src="" id="user-pic"></a>'+
                                                 '<a href="javascript:void(0);" style="font-size:15px;" id="iconSmall" class="icon" onclick="myFunction()"> <img src="" id="user-pic1"></a><!-- &#9776;</a> -->'+
                                               '</div>'
+document.getElementById("login").innerHTML = '<h3> Welcome to Clinhub! <h3>'+
+  '<h3>Please click the button below to login using gmail<h3>'+
+  '<button id="Gsign-in" class="mdl-button mdl-js-button mdl-button--fab " onclick="gsignIn()">'+
+    '<i class="fa fa-google" style="color:red"></i>'+
+  '</button>'+
+'</div>'
+
 // Saves the messaging device token to the datastore.
 saveMessagingDeviceToken = function() {
 
@@ -100,44 +106,83 @@ requestNotificationsPermissions = function() {
 messaging = firebase.messaging();
 messaging.onMessage(function(payload) {
   console.log("Message received. ", payload);
-  var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  if(ios){
-      notify(payload);
+})
+
+onAuthStateChanged = function(user) {
+  var home = document.getElementById('home');
+  var login = document.getElementById("login");
+  var userPic = document.getElementById('user-pic');
+  var userPic1 = document.getElementById('user-pic1');
+  var signOut = document.getElementById('sign-out');
+  if (user) {
+    currentUser = user
+    loadUsers().then(function(){
+      if(currentUser != user){
+        
+        login.hidden = true;
+        signOut.hidden = false;
+        var profilePicUrl = user.photoURL; 
+        // userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
+        userPic.src = profilePicUrl;
+        userPic1.src = profilePicUrl;
+        this.saveMessagingDeviceToken();
+        updateUrl(profilePicUrl);
+        loadData()
+        home.hidden = false;
+      } else{
+        auth.signOut();
+        alert("You are not authorised to sign in. Please contact Stony Brook University Hospital - Anesthesiology Department.")
+      }
+    }).catch(function(error){
+      console.log("some error - " + error);
+    });  
+  } else {
+    unLoadDb()
+    currentUser = '';
+    login.hidden = false;
+    home.hidden = true;
+    signOut.hidden = true;
+    userPic.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
+    userPic1.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg;"
   }
-  })
+
+    
+      
+};
+
+updateUrl = function(url){
+  if(url != currentUser.picUrl) {
+    var refToUpdate = firebase.database().ref('users/'+ currentUser.key+'/')
+    refToUpdate.update({
+         "picurl": url
+    });
+  }
+}
 
 
-  var notify = function (payload) {
-      // Check for notification compatibility.
-      if (!'Notification' in window) {
-          // If the browser version is unsupported, remain silent.
-          return;
-      }
-      // Log current permission level
-      console.log(Notification.permission);
-      // If the user has not been asked to grant or deny notifications
-      // from this domain...
-      if (Notification.permission === 'default') {
-          Notification.requestPermission(function () {
-              // ...callback this function once a permission level has been set.
-              notify();
-          });
-      }
-    // If the user has granted permission for this domain to send notifications...
-    else if (Notification.permission === 'granted') {
-        var n = new Notification(payload);
-        // Remove the notification from Notification Center when clicked.
-        n.onclick = function () {
-            this.close();
-        };
-        // Callback function when the notification is closed.
-        n.onclose = function () {
-            console.log('Notification closed');
-        };
+getUserName = function(user){
+  if(user != null)
+    return user.firstname + ' ' + user.lastname;
+  else
+    return " "
+}
+
+getFullName = function(user){
+  if(user != null)
+    return user.lastname + ' ' + user.firstname;
+  else
+    return " "
+}
+
+deleteMessagingToken = function(){
+  firebase.messaging().getToken().then(function(currentToken) {
+    if (currentToken) {
+      // Saving the Device Token to the datastore.
+      refToDelete = firebase.database().ref('/fcmTokens/' + currentToken + '/')
+      refToDelete.remove();
+      auth.signOut();
     }
-    // If the user does not want notifications to come from this domain...
-    else if (Notification.permission === 'denied') {
-        // ...remain silent.
-        return;
-    }
+  }.bind(this)).catch(function(error){
+    console.error('Unable to get messaging token.', error);
+  });
 }

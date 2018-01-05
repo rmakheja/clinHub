@@ -4,37 +4,9 @@ contact = function(key){
     window.location.replace("index.html");
 }
 
-onAuthStateChanged = function(user) {
-  var home = document.getElementById('home');
-  var login = document.getElementById("login");
-  var userPic = document.getElementById('user-pic');
-  var userPic1 = document.getElementById('user-pic1');
-  var signOut = document.getElementById('sign-out');
+loadData = function(user) {
   document.getElementById('usr_mi').className = "active"
-  if (user) { 
-    login.hidden = true;
-    signOut.hidden = false;
-    var profilePicUrl = user.photoURL; 
-    currentUser = user;
-    // userPic.style.background = 'url(' + profilePicUrl + ')';
-    userPic.src = profilePicUrl;
-    userPic1.src = profilePicUrl;
-    
-    loadUsers().then(function(){
-      displayUsers();
-    }).catch(function(error){
-            console.log("some error - " + error);
-      });
-    home.hidden = false;
-  } else {
-    unLoadDb()
-    currentUser = '';
-    login.hidden = false;
-    home.hidden = true;
-    signOut.hidden = true;
-    userPic.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
-    userPic1.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg;"
-  }
+  displayUsers();
 };
 
 sortDisplay = function(){
@@ -56,8 +28,8 @@ displayUsers = function(){
     temp_row = '<td onclick="contact('+ user.key +')">'+user.firstname+'</td>' +
           '<td>'+user.lastname+'</td>' +
           '<td>'+ user.department+'</td>' +
-          '<td>'+ user.email +'</td>' +
           '<td><a href="tel:'+ user.cellphone +'">' + user.cellphone +'</a></td>'+
+          '<td>'+ user.email +'</td>' +
           '<td>'+ user.role+'</td>'
         if(currentUser.isAdmin == "yes")
           ul += '<tr class="item" id = "'+user.key+'"><td  contentEditable = false><i class="fa fa-edit" style="color:red" onclick="edit('+ user.key+')"></i></td>'+
@@ -69,35 +41,86 @@ displayUsers = function(){
   list.innerHTML = ul;
   };
 edit = function(id){
+  usr = users_db[id]
+  document.getElementById("userForm").innerHTML += '<input type="submit" value="Submit" id="submit" onclick="save('+ id+')">'
+  document.getElementById("userList").hidden = true;
+  document.getElementById("userForm").hidden = false;
+  document.getElementById("fname").value = usr.firstname
+  document.getElementById("lname").value = usr.lastname
+  document.getElementById("sbuemail").value = usr.email
+  document.getElementById("gmail").value = usr.gmail
+  document.getElementById("role").value = usr.role
+  document.getElementById("cellphone").value = usr.cellphone
+  document.getElementById("dept").value = usr.department
+  document.getElementById("degree").value = usr.degree
+  document.getElementById("division").value = usr.division
+  document.getElementById("yesAdmin").checked = usr.isAdmin == "yes"
+  document.getElementById("noAdmin").checked = usr.isAdmin == "no"
   
-  row = document.getElementById(id);
-  row.contentEditable = true;
-  cols = row.getElementsByTagName("td")
-  col = cols[0]
-  col.innerHTML = '<td><i class="fa fa-upload" style="color:red" onclick="save('+ id+')"></i></td>'
-  nameCol = cols[1]
-  nameCol.onclick = "";
+
+
+  // row = document.getElementById(id);
+  // row.contentEditable = true;
+  // cols = row.getElementsByTagName("td")
+  // col = cols[0]
+  // col.innerHTML = '<td><i class="fa fa-upload" style="color:red" onclick="save('+ id+')"></i></td>'
+  // nameCol = cols[1]
+  // nameCol.onclick = "";
 }
 
 save = function(id){
-  row = document.getElementById(id);
-  row.contentEditable = false;
-  cols = row.getElementsByTagName("td")
-  //save the row
+  fname = document.getElementById("fname").value;
+  lname = document.getElementById("lname").value
+  email = document.getElementById("sbuemail").value
+  gmail = document.getElementById("gmail").value
+  cellphone = document.getElementById("cellphone").value
+  role = document.getElementById("role").value
+  dept = document.getElementById("dept").value
+  degree = document.getElementById("degree").value
+  division = document.getElementById("division").value
+  isAdmin = document.getElementById("yesAdmin").checked ? "yes" : "no"
+
+  // //save the row
   userRef = firebase.database().ref('users/'+id)
   userRef.update({
-    "firstname" : cols[1].innerText,
-    "lastname" :  cols[2].innerText,
-    "department" : cols[3].innerText,
-    "email" : cols[4].innerText,
-    "cellPhone" : cols[5].innerText,
-    "role" : cols[6].innerText,
+    "firstname" : fname,
+    "lastname" : lname,
+    "email" : email,
+    "gmail" : gmail,
+    "role" : role,
+    "cellPhone" : cellphone,
+    "department" : dept,
+    "degree" : degree,
+    "division" : division,
+    "isAdmin" : isAdmin
   })
 
-  col = cols[0]
-  col.innerHTML = '<td><i class="fa fa-edit" style="color:red" onclick="edit('+ id+')"></i></td>'
-  nameCol = cols[1]
-  nameCol.onclick = '"contact('+id+')"';
+  usr = users_db[id]
+  usr.firstname = fname
+  usr.lastname = lname
+  usr.email = email
+  usr.gmail = gmail
+  usr.role = role
+  usr.cellPhone = cellphone
+  usr.department = dept
+  usr.degree = degree
+  usr.division = division
+  usr.isAdmin = isAdmin
+
+  usrform = document.getElementById("userForm")
+  btn = document.getElementById("submit");
+  usrform.removeChild(btn);
+  usrform.hidden = true;
+  document.getElementById("userList").hidden = false;
+  row = document.getElementById(id);
+  cols = row.getElementsByTagName("td")
+  cols[1].innerText = fname
+  cols[2].innerText = lname
+  cols[3].innerText = dept
+  cols[4].innerHTML = cellphone == "" ? "" : '<a href="tel:'+ cellphone +'">' + cellphone +'</a>'
+  cols[5].innerText = email
+  cols[6].innerText = role
+  
 }
 
 deleteUser = function(id){
@@ -134,10 +157,11 @@ addUser = function(){
           '<tr class="item" id = "'+id+'"><td><i class="fa fa-edit" style="color:red" onclick="edit('+ id +')"></i></td><td onclick="contact('+ id +')">'+cols[1].innerText+'</td>' +
               '<td>'+cols[2].innerText+'</td>' +
               '<td>'+ cols[3].innerText+'</td>' +
-              '<td>'+ cols[4].innerText+'</td>' +
-              '<td><a href="tel:'+ cols[5].innerText + '">' + cols[5].innerText +'</a></td>'+
+              '<td><a href="tel:'+ cols[4].innerText + '">' + cols[4].innerText +'</a></td>'+
+              '<td>'+ cols[5].innerText+'</td>' +
               '<td>'+ cols[6].innerText+'</td>' +
               '<td  contentEditable = false><i class="fa fa-close" style="color:red" onclick="deleteUser('+ id+')"></i></td></tr>';
   table.removeChild(newRow)
   table.innerHTML = newR + table.innerHTML
 }
+

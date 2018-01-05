@@ -1,3 +1,16 @@
+loadData = function(){
+  document.getElementById('msg_mi').className = "active"
+  displayUserList();
+  loadMessages().then(function(){
+    var id = sessionStorage.getItem('chat_id')
+    if(id != null)
+      chat(id)
+    else
+      displayMessages()
+  }).catch(function(error){
+    console.log("some error - " + error);
+  });
+}
 checkSignedInWithMessage = function() {
  if (auth.currentUser) {
     return true;

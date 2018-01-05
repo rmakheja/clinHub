@@ -3,57 +3,35 @@ optionsDropdown = '';
 currentDate = '';
 
 
-onAuthStateChanged = function(user) {
-  var home = document.getElementById('home');
-  var login = document.getElementById("login");
-  var userPic = document.getElementById('user-pic');
-  var userPic1 = document.getElementById('user-pic1');
-  var signOut = document.getElementById('sign-out');
-  document.getElementById('sch_mi').className = "active"
-  if (user) {
-    login.hidden = true;
-    signOut.hidden = false;
-    var profilePicUrl = user.photoURL; 
-    currentUser = user;
-    // userPic.style.background = 'url(' + profilePicUrl + ')';
-    userPic.src = profilePicUrl;
-    userPic1.src = profilePicUrl;
-    loadSchedules().then(function(){
-      loadLocations();
-      loadUsers().then(function(){
-      	initOptions()
-		curr = new Date();
-        year = curr.getFullYear()
-        month = curr.getMonth()
-        date = curr.getDate()
-        currentDate = ''
-        if(date < 10)
-        	document.getElementById("date").value = year + "-" + month + "-0" + date
-        else
-        	document.getElementById("date").value = year + "-" + month + "-" + date
+loadData = function(user) {
+	document.getElementById('sch_mi').className = "active"
+	loadSchedules().then(function(){
+  	loadLocations().then(function(){
+			initOptions()
+			curr = new Date();
+			year = curr.getFullYear()
+    	month = curr.getMonth() + 1
+	    date = curr.getDate()
+	    currentDate = ''
+	    if(date < 10)
+    		date = "0"+date
+    		
+		if(month < 10)
+    		month = "0" + month
+    	document.getElementById("date").value = year + "-" + month + "-" + date
 		displaySchedule()
-      })
-    }).catch(function(error){
-            console.log("some error - " + error);
-      });
-    home.hidden = false;
-    
-  } else {
-    unLoadDb()
-    currentUser = '';
-    login.hidden = false;
-    home.hidden = true;
-    signOut.hidden = true;
-    userPic.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
-    userPic1.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg;"
-  }
+	}).catch(function(error){
+  		console.log("some error - " + error);
+	});
+	}).catch(function(error){
+    	console.log("some error - " + error);
+	});
 };
 
 displaySchedule = function(){
     
-    currentDate = document.getElementById("date").value.toString()
-	
-    var list = document.getElementById("schedule_list")
+  	currentDate = document.getElementById("date").value.toString()
+	var list = document.getElementById("schedule_list")
 	list.innerHTML = '';
  	var ul = ''
 	if(currentDate == ""){
@@ -63,10 +41,12 @@ displaySchedule = function(){
 	if(isNaN(parsedDate)){
 		return;
 	}
+	else
+		document.getElementById("date").value = currentDate
 	year = new Date(currentDate).getFullYear()
 	yearSchedules_db = schedules_db[year]
 	schedule_date = {}
-	if(currentDate in yearSchedules_db)
+	if(year in schedules_db && currentDate in yearSchedules_db)
 		schedule_date = yearSchedules_db[currentDate]
 	rooms = sortSchedule(schedule_date)
 	for(var ind in rooms){
@@ -78,12 +58,14 @@ displaySchedule = function(){
     	scheduleObject = schedule_date[room]
 
 	    ul += '<tr id = "' + scheduleObject.room + '">'+
-	          '<td>'+ room_name +'</td>' +
-	          '<td>'+  getFullName(users_db[scheduleObject.attending]) +'</td>' +
-	          '<td>' + getFullName(users_db[scheduleObject.resident]) +'</td>'+
-	          '<td>' + getFullName(users_db[scheduleObject.crna]) +'</td>'+
-	          '<td>' + getFullName(users_db[scheduleObject.surgeon]) +'</td>'+
-	          '<td><i class="fa fa-close" style="color:red" onclick="deleteAssignment(\''+ scheduleObject.room +'\')"></i></td></tr>';
+	          '<td>' + room_name +'</td>' +
+	          '<td>' + getFullName(users_db[scheduleObject.attending]) + '</td>' +
+	          '<td>' + getFullName(users_db[scheduleObject.resident]) + '</td>'+
+	          '<td>' + getFullName(users_db[scheduleObject.crna]) + '</td>'+
+	          '<td>' + getFullName(users_db[scheduleObject.surgeon]) + '</td>'
+	    if(currentUser.isAdmin == "yes")
+          	ul +='<td><i class="fa fa-close" style="color:red" onclick="deleteAssignment(\''+ scheduleObject.room +'\')"></i></td>'
+	    ul += '</tr>';
 	};
    list.innerHTML = optionsDropdown + ul;
 }

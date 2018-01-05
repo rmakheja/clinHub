@@ -1,95 +1,150 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=0.8">
+  <html>
+  <head>
 
-<meta charset="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="ClinHub">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
     <title>ClinHub</title>
     <link rel="icon" href="/images/icon16.png" />
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
 
+    <!-- Web Application Manifest -->
+    <link rel="manifest" href="manifest.json">
 
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ClinHub">
+    <meta name="theme-color" content="#303F9F">
+    <!-- Tile icon for Win8 -->
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <meta name="msapplication-navbutton-color" content="#303F9F">
 
-	<link rel="stylesheet" href="styles/searchAndsort.css">
-	<link rel = "stylesheet" href="styles/table-style.css"/>
-	<link rel="stylesheet" href="styles/header.css">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://www.w3schools.com/lib/w3.js"></script>
-</head>
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ClinHub">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#303F9F">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    
+    <!-- Material Design Lite -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+    
+
+    <!-- App Styling -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles/searchAndsort.css">
+    <link rel = "stylesheet" href="styles/table-style.css"/>
+    <link rel = "stylesheet" href="styles/user_form.css"/>
+    
+  </head>
+
 <body>
-	<header id="header">
-	</header>
-<div hidden id = "login" class="container" style="position: absolute;top: 45%;margin:0 auto;text-align: center;width: 20%;left: 35%">
-      <div class="omb_login">
-        <h3 class="omb_authTitle">Login</h3>
-        <div class="row omb_row-sm-offset-3 omb_socialButtons">
-          <button id="Fsign-in" class="mdl-button mdl-js-button mdl-button--fab" onclick="fsignIn()">
-            <i class="fa fa-facebook" style="color:red"></i>
-          </button>
-           <button id="Tsign-in" class="mdl-button mdl-js-button mdl-button--fab onclick="tsignIn()">
-            <i class="fa fa-twitter" style="color:red"></i>
-            </button>
-          <button id="Gsign-in" class="mdl-button mdl-js-button mdl-button--fab " onclick="gsignIn()">
-            <i class="fa fa-google" style="color:red"></i>
-          </button>
-        </div> 
-      </div>
-    </div>
-    <div hidden id = "home" class ="mdl-color-text--black" >
-        <!-- <div class="container panel-body">
-            <ul class="media-list" id = "physician_list">
-            </ul>
-        </div>
-    </div> 
-  </div> -->
-  <div class="table-responsive" style="margin: 0px auto;
+  <header id="header"></header>
+  <div hidden id = "login" class="container"></div>
+  <div hidden id = "home" class ="mdl-color-text--black" >
+    <div id="userList" class="table-responsive" style="margin: 0px auto;
     display:block;">
 
-    <select class="button button1" id="sort" name="sort">
+      <select class="button button1" id="sort" name="sort">
       		<option value="department">Department</option>
       		<option value="lastname">Lastname</option>
       		<option value="firstname">Firstname</option>
 		</select>
   		<button class="button button1" onclick="sortDisplay()">Sort</button>
-  		<input type="text" name="search" placeholder="Search.." oninput="w3.filterHTML('#tablePhysicians', '.item', this.value)">
+  		<input type="text" id="search" name="search" placeholder="Search.." oninput="w3.filterHTML('#tablePhysicians', '.item', this.value)">
 
-    <table id="tablePhysicians">
+      <table id="tablePhysicians">
       	<thead>
-        <tr class="success">
-          <!-- <th>Role</th> -->
-          <th></th>
-          <th>First name</th>
-          <th>Last name</th>
-          <!-- <th>Degree</th> -->
-          <th>Department</th>
-          <!-- <th>Division</th> -->
-          <th>Email</th>
-          <th>Cell Phone</th>
-          <th>Role</th>
-          <th></th>
-          <!-- <th>Secondary Phone</th> -->
-        </tr>
-      </thead>
-      <tbody  id="physician_list">
+          <tr class="success">
+            <!-- <th>Role</th> -->
+            <th></th>
+            <th>First name</th>
+            <th>Last name</th>
+            <!-- <th>Degree</th> -->
+            <th>Department</th>
+            <!-- <th>Division</th> -->
+            <th>Cell Phone</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th></th>
+            <!-- <th>Secondary Phone</th> -->
+          </tr>
+        </thead>
+        <tbody  id="physician_list">
         
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
+    <form hidden id="userForm">
+      <label for="fname">First Name</label>
+      <input type="text" id="fname" name="firstname" placeholder="First name.." required>
+      <br>
+
+      <label for="lname">Last Name</label>
+      <input type="text" id="lname" name="lastname" placeholder="Last name.." required>
+      <br>
+
+      <label for="gmail">Gmail</label>
+      <input type="email" id="gmail" name="gmail" placeholder="example@gmail.com" required>
+      <br>
+    
+      <label for="sbuemail">SBU Email</label>
+      <input type="email" id="sbuemail" name="sbuemail" placeholder="example@stonybrookmedicine.edu" required>
+      <br>
+
+      <label for="cellphone">Cell Phone</label>
+      <input type="tel" id="cellphone" name="cellphone" placeholder="0123456789">
+      <br>
+
+      <label for="dept">Department</label>
+      <input type="text" id="dept" name="department" placeholder="Department">
+      <br>
+
+      <label for="role">Role</label>
+      <input type="text" id="role" name="role" placeholder="Role...">
+      <br>
+
+      <label for="degree">Degree</label>
+      <input type="text" id="degree" name="degree" placeholder="Degree...">
+      <br>
+
+      <label for="division">Division</label>
+      <input type="text" id="division" name="division" placeholder="Division...">
+      <br>
+
+      <label for="admin" >Admin</label>
+      <input type="radio" id="yesAdmin" name="admin" value="yes"> Yes
+      <input type="radio" id="noAdmin" name="admin" value="no"> No
+      <br>
+      
+    </form>
   </div>
-  </div>
+  
 </body>   
   
-<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
 <script>
   // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyBqSFTzOw-QjM79Ll0u9ik4bYDRf7y0gHs",
-    authDomain: "clinhub-24309.firebaseapp.com",
-    databaseURL: "https://clinhub-24309.firebaseio.com",
-    storageBucket: "clinhub-24309.appspot.com",
-    messagingSenderId: "440022482925"
+    apiKey: "AIzaSyCc2g3icFFB3fN5Nh8A8IGydTLJJ-j-8aE",
+    authDomain: "sbu-clinub.firebaseapp.com",
+    databaseURL: "https://sbu-clinub.firebaseio.com",
+    projectId: "sbu-clinub",
+    storageBucket: "sbu-clinub.appspot.com",
+    messagingSenderId: "597919011198"
   };
   firebase.initializeApp(config);
 </script>

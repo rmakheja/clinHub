@@ -2,50 +2,23 @@ now = new Date();
 nowYear = now.getFullYear().toString()
 nowMonth = now.getMonth()+1
 limit = 3
-onAuthStateChanged = function(user) {
-  var home = document.getElementById('home');
-  var login = document.getElementById("login");
-  var userPic = document.getElementById('user-pic');
-  var userPic1 = document.getElementById('user-pic1');
-  var signOut = document.getElementById('sign-out');
+loadData = function(user) {
   document.getElementById('sur_mi').className = "active"
-  if (user) { 
-    login.hidden = true;
-    signOut.hidden = false;
-    var profilePicUrl = user.photoURL; 
-    currentUser = user;
-    // userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
-    userPic.src = profilePicUrl;
-    userPic1.src = profilePicUrl;
-    loadUsers().then(function(){
-      loadSurveys().then(function(){
-        loadSurveyTypes().then(function(){
-          displaySurveys()
-          if(currentUser.isAdmin == "yes"){
-            document.getElementById("generate").hidden = false;
-            document.getElementById("remind").hidden = false;
-            document.getElementById("facultySurvey").hidden = false;
-            document.getElementById("facultyURL").hidden = false;
-            document.getElementById("crnaURL").hidden = false;
-            document.getElementById("residentURL").hidden = false;
-          }
-        })
-      })
-    }).catch(function(error){
-        console.log("some error - " + error);
+  loadSurveys().then(function(){
+    loadSurveyTypes().then(function(){
+      displaySurveys()
+      if(currentUser.isAdmin == "yes"){
+        document.getElementById("generate").hidden = false;
+        document.getElementById("remind").hidden = false;
+        document.getElementById("facultySurvey").hidden = false;
+        document.getElementById("facultyURL").hidden = false;
+        document.getElementById("crnaURL").hidden = false;
+        document.getElementById("residentURL").hidden = false;
+      }
     })
-    
-    home.hidden = false;
-    
-  } else {
-    unLoadDb()
-    currentUser = '';
-    login.hidden = false;
-    home.hidden = true;
-    signOut.hidden = true;
-    userPic.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
-    userPic1.src= "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg;"
-  }
+  }).catch(function(error){
+      console.log("some error - " + error);
+  })
 };
 
 

@@ -9,40 +9,17 @@ onAuthStateChanged = function(user) {
     login.hidden = true;
     signOut.hidden = false;
     var profilePicUrl = user.photoURL; 
-    currentUser = user;
     // userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
     userPic.src = profilePicUrl;
     userPic1.src = profilePicUrl;
-    var id = sessionStorage.getItem('chat_id'); 
-    if(id != null) {
-      loadUsers().then(function(){
-        displayUserList();
-        loadMessages().then(function(){chat(id)}).catch(function(error){
-          console.log("some error - " + error);
-        });
-      }).catch(function(error){
-        console.log("some error - " + error);
-      });
-    } else {
-      loadUsers().then(function(){
-        if(this.newUser){
-          this.addCurrentUser();
-        }
-        updateUrl(profilePicUrl);
-        this.saveMessagingDeviceToken();
-        displayUserList();
-        loadMessages().then(function(){
-        displayMessages()
-        }).catch(function(error){
-            console.log("some error - " + error);
-            });
+    loadUsers().then(function(){
+      this.saveMessagingDeviceToken();
+      updateUrl(profilePicUrl);
+      loadData()
     }).catch(function(error){
-        console.log("some error - " + error);
-      });  
-  }
+      console.log("some error - " + error);
+    });  
     home.hidden = false;
-    // We save the Firebase Messaging Device token and enable notifications.
-    
   } else {
     unLoadDb()
     currentUser = '';
@@ -54,9 +31,11 @@ onAuthStateChanged = function(user) {
   }
 };
 
-
-
-
-
-
-
+updateUrl = function(url){
+  if(url != currentUser.picUrl) {
+    var refToUpdate = firebase.database().ref('users/'+ currentUser.key+'/')
+    refToUpdate.update({
+         "picurl": url
+    });
+  }
+}

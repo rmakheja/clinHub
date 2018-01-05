@@ -220,6 +220,7 @@ loadFiles = function(){
 loadUsers = function(){
   user_values = []
   userRef = firebase.database().ref('users/');
+  currUserFound = false
   return new Promise(function(res, rej){
     userRef.on(
     	"value",
@@ -229,11 +230,11 @@ loadUsers = function(){
       		id = parseInt(userId);
       		if(id > this.maxId)
       			this.maxId = id;
-       		if(users.hasOwnProperty(userId)){
+          if(users.hasOwnProperty(userId)){
         		var user = new Physician(id, users[userId]);
-        		if(user.email == currentUser.email){
-        			this.newUser = false;
-        			currentUser = user;
+        		if(!currUserFound && user.gmail == currentUser.email.toLowerCase()){
+              currentUser = user;
+              currUserFound = true;
         		}
        	  	//users_db[id] = user;
             user_values.push(user);

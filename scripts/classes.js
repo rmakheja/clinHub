@@ -53,11 +53,12 @@ Physician = class{
 	    this.degree = object["degree"]
 	    this.department = object["department"]
 	    this.division = object["division"]
-	    this.email = object["email"]
+	    this.email = object["email"] == undefined ? " " : object["email"].toLowerCase()
 	    this.cellphone = object["cellPhone"]
 	    this.secondaryphone = ''
 	    this.picUrl = object["picurl"]
 	    this.isAdmin = object["isAdmin"]
+	    this.gmail = object["gmail"] == undefined ? " " : object["gmail"].toLowerCase()
 	}
 }
 
