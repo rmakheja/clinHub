@@ -6,6 +6,7 @@ var currid = '';
 var chat_id = '';
 var maxId = 0;
 window.onload = function() {
+
   checkSetup();
   initFirebase();
 };

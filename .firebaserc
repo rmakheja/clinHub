@@ -1,6 +1,6 @@
 {
   "projects": {
-    "staging": "sbu-clinhub",
-    "default": "sbu-clinub"
+    "staging": "clinhub-24309",
+    "default": "clinhub-24309"
   }
 }

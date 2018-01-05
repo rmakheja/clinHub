@@ -1,5 +1,5 @@
 {
-  "name": "sbu-clinhub",
+  "name": "Clinhub",
   "description": "Firebase SDK for Cloud Functions codelab",
   "dependencies": {
     "@google-cloud/storage": "^0.6.1",
